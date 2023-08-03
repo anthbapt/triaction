@@ -23,11 +23,12 @@ Data
 
 ``Continuous data``:
  * Gene expression
- * 
+ * Ecological
+ * Neurological
 
 ``Discrete data`` :
  * CGDB data (Roche)
- * 
+ * HRS data
 
 -----------------
 Usage
