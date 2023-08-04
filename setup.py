@@ -2,7 +2,7 @@
 
 __author__ = "Anthony Baptista"
 __copyright__ = "Copyright 2023, Anthony Baptista"
-__email__ = "anthony.baptista@qmul.ac.uk"
+__email__ = "abaptista@turing.ac.uk"
 __license__ = "MIT"
 
 import codecs
