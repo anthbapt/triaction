@@ -1,0 +1,7 @@
+name: triaction
+channels:
+  - anaconda
+dependencies:
+  - pip
+  - pip:
+    - -r requirements.txt
