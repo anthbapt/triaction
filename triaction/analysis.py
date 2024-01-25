@@ -1,16 +1,15 @@
-from pyitlib.discrete_random_variable import information_mutual, information_mutual_conditional
 from sklearn.metrics import mean_squared_error
-from scipy.spatial import cKDTree as KDTree
 from seaborn_grid import SeabornFig2Grid
 import matplotlib.gridspec as gridspec
 from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
+from itertools import groupby
 from sklearn import tree
-import pyitlibnew as drv
-import matplotlib as mpl
+import infocore as ifc
 import seaborn as sns
 import scipy as sp
 import numpy as np
+import os
 
 
 def func(x, a, b):
@@ -105,7 +104,7 @@ def opimise_kl(X, Y, Z):
     return cond_val
 
 
-def visualisation_conditioned(X, Y, Z, name:str = None, cond = None):
+def visualisation_conditioned(timeseries, I, num, tlen, name:str = None, cond = None):
     """
     Visualize conditioned distributions.
 
@@ -119,7 +118,10 @@ def visualisation_conditioned(X, Y, Z, name:str = None, cond = None):
     Returns:
         None
     """
-
+    X_sort, Y_sort, sp = ifc.timeseries_quantile(timeseries, I, num, tlen)
+    X = X_sort
+    Y = Y_sort
+    Z = sp
     if cond == None:
         cond_val = opimise_kl(X, Y, Z)
         X_sup = X[Z > cond_val]
@@ -136,200 +138,122 @@ def visualisation_conditioned(X, Y, Z, name:str = None, cond = None):
         g1.ax_joint.set_xlabel('X', fontsize=15)
         g1.ax_joint.set_ylabel('Y', fontsize=15)
         plt.legend(fontsize='15')
-    else:
+    if type(cond) is int:
         X_sup = X[Z > cond]
         Y_sup = Y[Z > cond]
-        X_inf = X[Z < cond]
-        Y_inf = Y[Z < cond]
+        X_inf = X[Z <= cond]
+        Y_inf = Y[Z <= cond]
         xmin, xmax = 0, np.max(np.concatenate((X, Y)))
         ymin, ymax = 0, np.max(np.concatenate((X, Y)))
-        g0 = sns.jointplot(x = X_sup, y = Y_sup, label = 'Z > '+str(cond), xlim = (xmin,xmax), ylim = (ymin,ymax))
+        g0 = sns.jointplot(x = X_inf, y = Y_inf, label = 'Z < '+str(cond), xlim = (xmin,xmax), ylim = (ymin,ymax))
         g0.ax_joint.set_xlabel('X', fontsize=15)
         g0.ax_joint.set_ylabel('Y', fontsize=15)
         plt.legend(fontsize='15')
-        g1 = sns.jointplot(x = X_inf, y = Y_inf, label = 'Z < '+str(cond), xlim = (xmin,xmax), ylim = (ymin,ymax))
+        g1 = sns.jointplot(x = X_sup, y = Y_sup, label = 'Z > '+str(cond), xlim = (xmin,xmax), ylim = (ymin,ymax))
         g1.ax_joint.set_xlabel('X', fontsize=15)
         g1.ax_joint.set_ylabel('Y', fontsize=15)
+        plt.legend(fontsize='15')
+    if type(cond) is list:
+        X_a = X[Z < cond[0]]
+        Y_a = Y[Z < cond[0]]
+        X_b = X[np.logical_and(Z <= cond[1], Z >= cond[0])]
+        Y_b = Y[np.logical_and(Z <= cond[1], Z >= cond[0])]
+        X_c = X[Z > cond[1]]
+        Y_c = Y[Z > cond[1]]
+        xmin, xmax = 0, np.max(np.concatenate((X, Y)))
+        ymin, ymax = 0, np.max(np.concatenate((X, Y)))
+        g0 = sns.jointplot(x = X_a, y = Y_a, label = 'Z < '+str(cond[0]), xlim = (xmin,xmax), ylim = (ymin,ymax))
+        g0.ax_joint.set_xlabel('X', fontsize=15)
+        g0.ax_joint.set_ylabel('Y', fontsize=15)
+        plt.legend(fontsize='15')
+        g1 = sns.jointplot(x = X_b, y = Y_b, label = str(cond[0]) + '<= Z <= '+str(cond[1]), xlim = (xmin,xmax), ylim = (ymin,ymax))
+        g1.ax_joint.set_xlabel('X', fontsize=15)
+        g1.ax_joint.set_ylabel('Y', fontsize=15)
+        plt.legend(fontsize='15')
+        g2 = sns.jointplot(x = X_c, y = Y_c, label = str(cond[1]) + '< Z', xlim = (xmin,xmax), ylim = (ymin,ymax))
+        g2.ax_joint.set_xlabel('X', fontsize=15)
+        g2.ax_joint.set_ylabel('Y', fontsize=15)
         plt.legend(fontsize='15')
     
     fig = plt.figure(figsize=(12,6))
     fig.suptitle('Conditional distribution', fontsize=18)
-    gs = gridspec.GridSpec(1, 2)
+    gs = gridspec.GridSpec(1, 3)
 
     mg0 = SeabornFig2Grid(g0, fig, gs[0])
     mg1 = SeabornFig2Grid(g1, fig, gs[1])
+    if type(cond) is list:
+        mg2 = SeabornFig2Grid(g2, fig, gs[2])
 
     gs.tight_layout(fig)
     
     if name != None:
         plt.savefig(name + '.png', format = 'png')
+        
     
-    
-def decision_tree(x_1d, y_1d, disp_fig = False, disp_txt_rep = False, disp_tree = False):
+def decision_tree(x_1d, y_1d, disp_fig = False, disp_txt_rep = False, disp_tree = False, name = None):
     """
-    Perform decision tree analysis.
+    Create and visualize a Decision Tree model for predicting mutual information.
 
     Args:
-        x_1d (array-like): Input x-values.
-        y_1d (array-like): Input y-values.
-        disp_fig (bool, optional): Display figures. Default is False.
-        disp_txt_rep (bool, optional): Display text representation. Default is False.
-        disp_tree (bool, optional): Display decision tree. Default is False.
+    x_1d (array_like): Input data representing the z-th quantile.
+    y_1d (array_like): Output data representing mutual information (MI) conditioned on z.
+    disp_fig (bool, optional): Display scatter and prediction plot. Default is False.
+    disp_txt_rep (bool, optional): Display text representation of the decision tree. Default is False.
+    disp_tree (bool, optional): Display graphical representation of the decision tree. Default is False.
+    name (str, optional): Name for saving output figures. Default is None.
 
     Returns:
-        float: Split value obtained from the decision tree analysis.
-    """
+    tuple: Tuple containing two integers and a list.
+        - First integer: Threshold value for the first split.
+        - Second integer: Threshold value for the second split.
+        - List: Output values for the decision tree leaves.
 
-    size = len(x_1d)
+    """
+    if name != None:
+        save_folder = "output"
+        try : 
+            os.mkdir(save_folder)
+        except OSError : 
+            pass
+
+    size = int(np.max(x_1d))
     x = np.zeros((size,1))
     y = np.zeros((size,1))
     x[0:size,0] = x_1d
     y[0:size,0] = y_1d
-    regr = tree.DecisionTreeRegressor(max_depth=2, max_leaf_nodes=3)
+    max_leaf_nodes = 3
+    regr = tree.DecisionTreeRegressor(max_depth = 2, max_leaf_nodes = max_leaf_nodes)
     regr.fit(x, y)
     x_test = np.arange(0.0, size, 0.01)[:, np.newaxis]
     y_pred = regr.predict(x_test)
-    val = regr.tree_.threshold[regr.tree_.threshold>0]
-    min_arg = np.where(x == int(min(val)))[0]
-    max_arg = np.where(x == int(max(val))+1)[0]
-    split_val = x[np.where(y == max(y[min_arg], y[max_arg]))[0]-1][0]
-    
-    if disp_fig == True:
+    val = sorted(regr.tree_.threshold[regr.tree_.threshold>0])
+    values = list(regr.tree_.threshold)
+    num_times, occurrence = max((len(list(item)), key) for key, item in groupby(values))
+    index_leaves = [i for i, x in enumerate(values) if x == min(values)]
+    if num_times == max_leaf_nodes:
+        temp = list(regr.tree_.value[index_leaves,0,0])
+        output = temp[1::]
+        output.append(temp[0])
+    else:
+        output = list(regr.tree_.value[index_leaves,0,0])
+
+    if disp_fig == True or name is not None:
         plt.figure()
-        plt.scatter(x, y, s=50, edgecolor="black", c="darkorange", label="data")
-        plt.plot(x_test, y_pred, color="cornflowerblue", label="max_depth=1", linewidth=2)
-        plt.title('Decision tree', fontsize=15)
-        plt.xlabel("$\mathregular{z^{th}}$ quantile", fontsize=12)
-        plt.ylabel("MI(XY|Z = z) - MI(XY|Z)", fontsize=12)
-        plt.savefig('output/tree.png', format = 'png', dpi = 600)
+        plt.scatter(x, y, s = 50, edgecolor = "black", c = "darkorange", label = "data")
+        plt.plot(x_test, y_pred, color = "cornflowerblue", label = "max_depth=1", linewidth = 2)
+        plt.title('Decision tree', fontsize = 15)
+        plt.xlabel("$\mathregular{z^{th}}$ quantile", fontsize = 12)
+        plt.ylabel("MI(XY|Z = z)", fontsize = 12)
+        if name is not None:
+            plt.savefig(name + '_tree1',bbox_inches="tight", dpi = 600)
     
     if disp_txt_rep == True:
         text_representation = tree.export_text(regr)
-        print(text_representation)
     
-    if disp_tree == True:
-        fig = plt.figure(figsize=(8,4), dpi=600)
-        _ = tree.plot_tree(regr, filled=True, feature_names=['z', 'z'], impurity=False, fontsize=10)
-        fig.savefig('output/tree2.png', format = 'png')
+    if disp_tree == True or name is not None:
+        fig = plt.figure(figsize = (8,4), dpi = 600)
+        _ = tree.plot_tree(regr, filled = True, feature_names = ['z', 'z'], impurity = False, fontsize = 10)
+        if name is not None:
+            fig.savefig(save_folder + '/' + name + '_tree2', dpi = 600)
         
-    return split_val[0]
-
-
-def triadic_analysis(X, Y, Z, bins, tol = 0, th = None, save_folder = None):
-    """
-    Perform triadic analysis.
-
-    Args:
-        X (array-like): Input data for variable X.
-        Y (array-like): Input data for variable Y.
-        Z (array-like): Input data for variable Z.
-        bins (int): Number of bins for analysis.
-        tol (int, optional): Tolerance for preprocessing. Default is 0.
-        th (float, optional): Threshold value for decision tree analysis.
-        save_folder (str, optional): Folder for saving visualizations.
-
-    Returns:
-        None
-    """
-
-    X, Y, Z, X_sort, Y_sort = drv.preprocess(X, Y, Z, num = bins, tol = tol, XY_sort = True)
-    std, std_null, corr, zscore, T, T_null, T_zscore, Tn, Tn_null, Tn_zscore, MI_XY, MIC = stats(X, Y, Z, num = bins)
-    T, Tn, MIz, Pz, valz = drv.pele_mele(X, Y, Z)
-    print('Sigma: ', std)
-    print('Sigma_null: ', std_null)
-    print('corr: ', corr)
-    print('z_score: ', zscore)
-    print('MIC:', MIC)
-    print('MI_XY:', MI_XY)
-    sig_dif_abs_dis = abs(MIz-np.ones(len(MIz))*np.sum(MIz*Pz))
-    if th == None:
-        th = decision_tree(valz, sig_dif_abs_dis, disp_fig = True, disp_txt_rep = False, disp_tree = True)
-        if save_folder == None:
-            visualisation_conditioned(X_sort, Y_sort, Z, name = 'distribution_conditioned')
-        else: 
-            visualisation_conditioned(X_sort, Y_sort, Z, name = save_folder + '/distribution_conditioned')
-    else:
-        if save_folder == None:
-            visualisation_conditioned(X_sort, Y_sort, Z, name = 'distribution_conditioned')
-        else: 
-            visualisation_conditioned(X_sort, Y_sort, Z, name = save_folder + '/distribution_conditioned')
-            
-            
-def stats(X, Y, Z, num = 5, tol = 0):
-    """
-    Calculate some measures.
-
-    Args:
-        X (array-like): Input data for variable X.
-        Y (array-like): Input data for variable Y.
-        Z (array-like): Input data for variable Z.
-        num (int, optional): Number of bins for analysis. Default is 5.
-        tol (int, optional): Tolerance for preprocessing. Default is 0.
-
-    Returns:
-        tuple: A tuple containing some measures.
-    """    
-
-    X, Y, Z = drv.preprocess(X, Y, Z, num = num, tol = tol)
-    corr = drv.corr(X, Y, Z)
-    std = drv.std(X, Y, Z)
-    T, Tn, MIz, Pz, valz = drv.pele_mele(X, Y, Z)
-    std_null, std_std, T_null, T_std, Tn_null, Tn_std = drv.gaussian_null_model(X, Y, Z, num = num)
-    zscore = np.abs((std - std_null)/std_std)
-    T_zscore = np.abs((T - T_null)/T_std)
-    Tn_zscore = np.abs((Tn - Tn_null)/Tn_std)
-    MI_XY = information_mutual(X, Y)    
-    MIC = information_mutual_conditional(X, Y, Z)
-    
-    return std, std_null, corr, zscore, T, T_null, T_zscore, Tn, Tn_null, Tn_zscore, MI_XY, MIC
-
-
-def stats_dis(triadic, data, num = 5):
-    """
-    Calculate some measures for a dataset.
-
-    Args:
-        triadic (DataFrame): DataFrame containing triadic data.
-        data (DataFrame): DataFrame containing input data.
-        num (int, optional): Number of bins for analysis. Default is 5.
-
-    Returns:
-        tuple: A tuple containing some measures for a dataset.
-    """
-
-    std_array = np.array([])
-    std_null_array = np.array([])
-    corr_array = np.array([])
-    zscore_array = np.array([])
-    MI_XY_array = np.array([])
-    MIC_array = np.array([])
-    T_array = np.array([])
-    T_null_array = np.array([])
-    T_zscore_array = np.array([])
-    Tn_array = np.array([])
-    Tn_null_array = np.array([])
-    Tn_zscore_array = np.array([])
-    for k in range(len(triadic)):
-        X = triadic.iloc[k]['node1']
-        Y = triadic.iloc[k]['node2']
-        Z = triadic.iloc[k]['reg']
-        X = np.array(data[X])
-        Y = np.array(data[Y])
-        Z = np.array(data[Z])
-        std, std_null, corr, zscore, T, T_null, T_zscore, Tn, Tn_null, Tn_zscore, MI_XY, MIC = stats(X, Y, Z)
-        std_array = np.append(std_array, std)
-        std_null_array = np.append(std_null_array, std_null)
-        corr_array = np.append(corr_array, corr)
-        zscore_array = np.append(zscore_array, zscore)
-        T_array = np.append(T_array, T)
-        T_null_array = np.append(T_null_array, T_null)
-        T_zscore_array = np.append(T_zscore_array, T_zscore)
-        Tn_array = np.append(Tn_array, Tn)
-        Tn_null_array = np.append(Tn_null_array, Tn_null)
-        Tn_zscore_array = np.append(Tn_zscore_array, Tn_zscore)
-        MI_XY_array = np.append(MI_XY_array, MI_XY)
-        MIC_array = np.append(MIC_array, MIC)
-        if k%50 == 0:
-            print(str(k/len(triadic)*100)+'%')
-    
-    return std_array, std_null_array, corr_array, zscore_array, T_array, T_null_array, T_zscore_array, Tn_array, Tn_null_array, Tn_zscore_array, MI_XY_array, MIC_array
+    return int(val[0])+1, int(val[1]), output

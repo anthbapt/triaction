@@ -3,12 +3,13 @@ from matplotlib import pylab
 import networkx as nx
 import pandas as pd
 import numpy as np
+import os
 
 
 def triadic_network_vis_from_scratch(structural_nodes, structural_edges, 
                                     pos_regulatory_nodes, pos_regulatory_edges, 
                                     neg_regulatory_nodes, neg_regulatory_edges, 
-                                    connected_edges, save_folder = None):
+                                    connected_edges):
     """
     Visualize a triadic network from scratch.
 
@@ -26,8 +27,14 @@ def triadic_network_vis_from_scratch(structural_nodes, structural_edges,
 
     Returns:
         None
+        
     """
-    
+    save_folder = "output"
+    try : 
+        os.mkdir(save_folder)
+    except OSError : 
+        pass
+
     regulatory_nodes = pos_regulatory_nodes + neg_regulatory_nodes
     regulatory_edges = pos_regulatory_edges + neg_regulatory_edges
     structural_graph = nx.Graph()
@@ -45,45 +52,42 @@ def triadic_network_vis_from_scratch(structural_nodes, structural_edges,
     structural_graph.add_edges_from(regulatory_edges)
 
     # nodes
-    options = {"node_size": 800, "alpha": 1}
+    options = {"node_size": 150}
     nx.draw_networkx_nodes(structural_graph, pos, nodelist = neg_regulatory_nodes, node_shape = 'h', node_color = "red", **options)
     nx.draw_networkx_nodes(structural_graph, pos, nodelist = pos_regulatory_nodes, node_shape = 'h', node_color = "green", **options)
-    nx.draw_networkx_nodes(structural_graph, pos, nodelist = structural_nodes, node_color = "blue", **options)
+    nx.draw_networkx_nodes(structural_graph, pos, nodelist = structural_nodes, node_color = "blue", alpha = 0.5, **options)
 
     # edges
     nx.draw_networkx_edges(structural_graph,
         pos,
         edgelist = neg_regulatory_edges,
-        width = 4,
-        alpha = 0.75,
+        width = 0.5,
+        alpha = 0.5,
         style = 'dashed',
         edge_color = "red")
     nx.draw_networkx_edges(structural_graph,
         pos,
         edgelist = pos_regulatory_edges,
-        width = 4,
-        alpha = 0.75,
+        width = 0.5,
+        alpha = 0.5,
         style = 'dashed',
         edge_color = "green")
     nx.draw_networkx_edges(
         structural_graph,
         pos,
         edgelist = structural_edges,
-        width = 4,
+        width = 0.5,
         alpha = 0.5,
         edge_color = "blue")
     
     # labels
     node_labels = {i:str(i) for i in structural_nodes}
     pos_labels = {i:pos[i] for i in structural_nodes}
-    nx.draw_networkx_labels(structural_graph, pos_labels, node_labels, font_size = 15, font_color = "whitesmoke")
-    if save_folder == None:
-        plt.savefig('test_vis_from_scratch.png', format = 'png', dpi = 600)
-    else:
-        plt.savefig(save_folder + '/test_vis_from_scratch.png', format = 'png', dpi = 600)
+    nx.draw_networkx_labels(structural_graph, pos_labels, node_labels, font_size = 8, font_color = "black", verticalalignment = 'center')
+    plt.savefig(save_folder + '/test_vis_from_scratch.png', format = 'png', dpi = 600)
     
     
-def triadic_network_vis_from_data(triadic, top, save_folder = None):
+def triadic_network_vis_from_data(triadic, top):
     """
     Visualize a triadic network from given data.
 
@@ -96,7 +100,13 @@ def triadic_network_vis_from_data(triadic, top, save_folder = None):
 
     Returns:
         None
+        
     """
+    save_folder = "output"
+    try : 
+        os.mkdir(save_folder)
+    except OSError : 
+        pass
     
     plt.figure(num = None, figsize = (top, top), dpi = 600)
     plt.axis('off')
@@ -168,13 +178,10 @@ def triadic_network_vis_from_data(triadic, top, save_folder = None):
     node_labels = {i:str(i) for i in regulatory_nodes}
     pos_labels = {i:pos[i] for i in regulatory_nodes}
     nx.draw_networkx_labels(graph, pos_labels, node_labels, font_size = 2, font_color = "black")
-    if save_folder == None:
-        plt.savefig('triadic_vis_from_data.png', format = 'png', dpi = 600)
-    else:
-        plt.savefig(save_folder + '/triadic_vis_from_data.png', format = 'png', dpi = 600)
+    plt.savefig(save_folder + '/triadic_vis_from_data.png', format = 'png', dpi = 600)
     
     
-def triadic_network_vis_from_data_and_graph(graph, triadic, top, save_folder = None):
+def triadic_network_vis_from_data_and_graph(graph, triadic, top):
     """
     Visualize a triadic network from given data and an existing graph.
 
@@ -188,7 +195,13 @@ def triadic_network_vis_from_data_and_graph(graph, triadic, top, save_folder = N
 
     Returns:
         None
+        
     """
+    save_folder = "output"
+    try : 
+        os.mkdir(save_folder)
+    except OSError : 
+        pass
 
     plt.figure(num = None, figsize = (top, top), dpi = 600)
     plt.axis('off')
@@ -244,24 +257,24 @@ def triadic_network_vis_from_data_and_graph(graph, triadic, top, save_folder = N
 
     # nodes
     nx.draw_networkx_nodes(structural_graph, pos, nodelist = neg_regulatory_nodes, \
-                           node_shape = 'h', node_color = "red", node_size = 2)
+                           node_shape = 'h', node_color = "red", node_size = 50)
     nx.draw_networkx_nodes(structural_graph, pos, nodelist = pos_regulatory_nodes, \
-                           node_shape = 'h', node_color = "green", node_size = 2)
+                           node_shape = 'h', node_color = "green", node_size = 50)
     nx.draw_networkx_nodes(structural_graph, pos, nodelist = structural_nodes, \
-                           node_color = "blue", node_size = 2)
+                           node_color = "blue", alpha = 0.5, node_size = 50)
 
     # edges
     nx.draw_networkx_edges(structural_graph,
         pos,
         edgelist = neg_regulatory_edges,
-        width = 0.2,
+        width = 0.5,
         alpha = 0.5,
         style = 'dashed',
         edge_color = "red")
     nx.draw_networkx_edges(structural_graph,
         pos,
         edgelist = pos_regulatory_edges,
-        width = 0.2,
+        width = 0.5,
         alpha = 0.5,
         style = 'dashed',
         edge_color = "green")
@@ -269,15 +282,12 @@ def triadic_network_vis_from_data_and_graph(graph, triadic, top, save_folder = N
         structural_graph,
         pos,
         edgelist = structural_edges,
-        width = 0.2,
+        width = 0.5,
         alpha = 0.5,
         edge_color = "blue")
     
     # labels
     node_labels = {i:str(i) for i in structural_nodes}
     pos_labels = {i:pos[i] for i in structural_nodes}
-    nx.draw_networkx_labels(structural_graph, pos_labels, node_labels, font_size = 2, font_color = "black")
-    if save_folder == None:
-        plt.savefig('triadic_vis_from_data.png', format = 'png', dpi = 600)
-    else:
-        plt.savefig(save_folder + '/triadic_vis_from_data.png', format = 'png', dpi = 600)
+    nx.draw_networkx_labels(structural_graph, pos_labels, node_labels, font_size = 8, font_color = "black", verticalalignment = 'bottom')
+    plt.savefig(save_folder + '/triadic_vis_from_data.png', format = 'png', dpi = 600)

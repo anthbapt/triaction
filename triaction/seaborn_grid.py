@@ -1,5 +1,5 @@
-import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
+import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
@@ -47,6 +47,7 @@ class SeabornFig2Grid:
         ```python
         grid = SeabornFig2Grid(seaborn_grid, matplotlib_figure, subplot_spec)
         ```
+        
     """
 
 
