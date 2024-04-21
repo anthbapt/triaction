@@ -1,5 +1,5 @@
 =============================================================================================
-triaction : Python code for triadic interactions
+Triaction : Python code for triadic interactions
 =============================================================================================
 
 .. image:: logo.png
@@ -7,6 +7,7 @@ triaction : Python code for triadic interactions
 
 This repository contains the Python package called triaction, which enables the detection of triadic interactions. It also provides visualization capabilities to visualise triadic interaction network.
 
+# Add link to arXiv link
 -----------------
  Installation
 -----------------
@@ -23,20 +24,9 @@ Data
 
 ``Continuous data``:
  * Gene expression
- * Ecological
- * Neurological
-
-``Discrete data`` :
- * CGDB data (Roche)
- * HRS data
 
 -----------------
 Usage
 -----------------
 
-
-Detection of the triadic interactions
------------------
-
-Visualisation of the triadic interactions network
------------------
+Display some info about the notebook, and some figures
