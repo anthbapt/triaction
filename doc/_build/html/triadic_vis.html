@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>triadic_vis module &mdash; triaction 0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="content/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/cite.html">Citation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/changelog.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/contributing.html">Contributor Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">triaction</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">triadic_vis module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/triadic_vis.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-triadic_vis">
+<span id="triadic-vis-module"></span><h1>triadic_vis module<a class="headerlink" href="#module-triadic_vis" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="triadic_vis.triadic_network_vis_from_data">
+<span class="sig-prename descclassname"><span class="pre">triadic_vis.</span></span><span class="sig-name descname"><span class="pre">triadic_network_vis_from_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">triadic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/triadic_vis.html#triadic_network_vis_from_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#triadic_vis.triadic_network_vis_from_data" title="Permalink to this definition"></a></dt>
+<dd><p>Visualize a triadic network from given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>triadic</strong> (<em>pandas.DataFrame</em>) – DataFrame containing triadic data.</p></li>
+<li><p><strong>top</strong> (<em>int</em>) – Number of top records to visualize.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Keyword Arguments<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>save_folder</strong> (<em>str</em>) – Folder path to save the visualization. Default is None.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="triadic_vis.triadic_network_vis_from_data_and_graph">
+<span class="sig-prename descclassname"><span class="pre">triadic_vis.</span></span><span class="sig-name descname"><span class="pre">triadic_network_vis_from_data_and_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triadic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/triadic_vis.html#triadic_network_vis_from_data_and_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#triadic_vis.triadic_network_vis_from_data_and_graph" title="Permalink to this definition"></a></dt>
+<dd><p>Visualize a triadic network from given data and an existing graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graph</strong> (<em>networkx.Graph</em>) – Existing graph.</p></li>
+<li><p><strong>triadic</strong> (<em>pandas.DataFrame</em>) – DataFrame containing triadic data.</p></li>
+<li><p><strong>top</strong> (<em>int</em>) – Number of top records to visualize.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Keyword Arguments<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>save_folder</strong> (<em>str</em>) – Folder path to save the visualization. Default is None.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="triadic_vis.triadic_network_vis_from_scratch">
+<span class="sig-prename descclassname"><span class="pre">triadic_vis.</span></span><span class="sig-name descname"><span class="pre">triadic_network_vis_from_scratch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structural_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">structural_edges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_regulatory_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_regulatory_edges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neg_regulatory_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neg_regulatory_edges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connected_edges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/triadic_vis.html#triadic_network_vis_from_scratch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#triadic_vis.triadic_network_vis_from_scratch" title="Permalink to this definition"></a></dt>
+<dd><p>Visualize a triadic network from scratch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>structural_nodes</strong> (<em>list</em>) – List of nodes for the structural graph.</p></li>
+<li><p><strong>structural_edges</strong> (<em>list</em>) – List of edges for the structural graph.</p></li>
+<li><p><strong>pos_regulatory_nodes</strong> (<em>list</em>) – List of nodes with positive regulatory edges.</p></li>
+<li><p><strong>pos_regulatory_edges</strong> (<em>list</em>) – List of positive regulatory edges.</p></li>
+<li><p><strong>neg_regulatory_nodes</strong> (<em>list</em>) – List of nodes with negative regulatory edges.</p></li>
+<li><p><strong>neg_regulatory_edges</strong> (<em>list</em>) – List of negative regulatory edges.</p></li>
+<li><p><strong>connected_edges</strong> (<em>list</em>) – List of edges connecting nodes.</p></li>
+<li><p><strong>Args</strong> (<em>Keyword</em>) – </p></li>
+<li><p><strong>----------</strong> – </p></li>
+<li><p><strong>save_folder</strong> (<em>str</em>) – Folder path to save the visualization. Default is None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright (c) 2023: Anthony Baptista.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>triadic_vis &mdash; triaction 0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../content/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../content/tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../content/reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../content/cite.html">Citation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../content/changelog.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../content/contributing.html">Contributor Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">triaction</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">triadic_vis</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for triadic_vis</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pylab</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<div class="viewcode-block" id="triadic_network_vis_from_scratch"><a class="viewcode-back" href="../triadic_vis.html#triadic_vis.triadic_network_vis_from_scratch">[docs]</a><span class="k">def</span> <span class="nf">triadic_network_vis_from_scratch</span><span class="p">(</span><span class="n">structural_nodes</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span> <span class="n">structural_edges</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span> 
+                                    <span class="n">pos_regulatory_nodes</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span> <span class="n">pos_regulatory_edges</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span> 
+                                    <span class="n">neg_regulatory_nodes</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span> <span class="n">neg_regulatory_edges</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span> 
+                                    <span class="n">connected_edges</span><span class="p">:</span><span class="nb">list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visualize a triadic network from scratch.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    structural_nodes : list</span>
+<span class="sd">        List of nodes for the structural graph.</span>
+<span class="sd">    structural_edges : list</span>
+<span class="sd">        List of edges for the structural graph.</span>
+<span class="sd">    pos_regulatory_nodes : list</span>
+<span class="sd">        List of nodes with positive regulatory edges.</span>
+<span class="sd">    pos_regulatory_edges : list</span>
+<span class="sd">        List of positive regulatory edges.</span>
+<span class="sd">    neg_regulatory_nodes : list</span>
+<span class="sd">        List of nodes with negative regulatory edges.</span>
+<span class="sd">    neg_regulatory_edges : list</span>
+<span class="sd">        List of negative regulatory edges.</span>
+<span class="sd">    connected_edges : list</span>
+<span class="sd">        List of edges connecting nodes.</span>
+
+<span class="sd">    Keyword Args:</span>
+<span class="sd">    ----------</span>
+<span class="sd">    save_folder : str</span>
+<span class="sd">        Folder path to save the visualization. Default is None.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">save_folder</span> <span class="o">=</span> <span class="s2">&quot;output&quot;</span>
+    <span class="k">try</span> <span class="p">:</span> 
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">save_folder</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span> <span class="p">:</span> 
+        <span class="k">pass</span>
+
+    <span class="n">regulatory_nodes</span> <span class="o">=</span> <span class="n">pos_regulatory_nodes</span> <span class="o">+</span> <span class="n">neg_regulatory_nodes</span>
+    <span class="n">regulatory_edges</span> <span class="o">=</span> <span class="n">pos_regulatory_edges</span> <span class="o">+</span> <span class="n">neg_regulatory_edges</span>
+    <span class="n">structural_graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+    <span class="n">structural_graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">structural_nodes</span><span class="p">)</span>
+    <span class="n">structural_graph</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">structural_edges</span><span class="p">)</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="n">structural_graph</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">connected_edges</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)):</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="n">connected_edges</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">pos_node1</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">connected_edges</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">pos_node2</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">connected_edges</span><span class="p">[(</span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">pos_reg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">pos_node1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">pos_node2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">pos_node1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">pos_node2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">pos</span><span class="p">[</span><span class="n">reg</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos_reg</span>
+    <span class="n">structural_graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">regulatory_nodes</span><span class="p">)</span>
+    <span class="n">structural_graph</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">regulatory_edges</span><span class="p">)</span>
+
+    <span class="c1"># nodes</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;node_size&quot;</span><span class="p">:</span> <span class="mi">150</span><span class="p">}</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_nodes</span><span class="p">(</span><span class="n">structural_graph</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">nodelist</span> <span class="o">=</span> <span class="n">neg_regulatory_nodes</span><span class="p">,</span> <span class="n">node_shape</span> <span class="o">=</span> <span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="n">node_color</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_nodes</span><span class="p">(</span><span class="n">structural_graph</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">nodelist</span> <span class="o">=</span> <span class="n">pos_regulatory_nodes</span><span class="p">,</span> <span class="n">node_shape</span> <span class="o">=</span> <span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="n">node_color</span> <span class="o">=</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_nodes</span><span class="p">(</span><span class="n">structural_graph</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">nodelist</span> <span class="o">=</span> <span class="n">structural_nodes</span><span class="p">,</span> <span class="n">node_color</span> <span class="o">=</span> <span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+
+    <span class="c1"># edges</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span><span class="n">structural_graph</span><span class="p">,</span>
+        <span class="n">pos</span><span class="p">,</span>
+        <span class="n">edgelist</span> <span class="o">=</span> <span class="n">neg_regulatory_edges</span><span class="p">,</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">style</span> <span class="o">=</span> <span class="s1">&#39;dashed&#39;</span><span class="p">,</span>
+        <span class="n">edge_color</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">)</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span><span class="n">structural_graph</span><span class="p">,</span>
+        <span class="n">pos</span><span class="p">,</span>
+        <span class="n">edgelist</span> <span class="o">=</span> <span class="n">pos_regulatory_edges</span><span class="p">,</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">style</span> <span class="o">=</span> <span class="s1">&#39;dashed&#39;</span><span class="p">,</span>
+        <span class="n">edge_color</span> <span class="o">=</span> <span class="s2">&quot;green&quot;</span><span class="p">)</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span>
+        <span class="n">structural_graph</span><span class="p">,</span>
+        <span class="n">pos</span><span class="p">,</span>
+        <span class="n">edgelist</span> <span class="o">=</span> <span class="n">structural_edges</span><span class="p">,</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">edge_color</span> <span class="o">=</span> <span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># labels</span>
+    <span class="n">node_labels</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">structural_nodes</span><span class="p">}</span>
+    <span class="n">pos_labels</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span><span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">structural_nodes</span><span class="p">}</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_labels</span><span class="p">(</span><span class="n">structural_graph</span><span class="p">,</span> <span class="n">pos_labels</span><span class="p">,</span> <span class="n">node_labels</span><span class="p">,</span> <span class="n">font_size</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="n">font_color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">verticalalignment</span> <span class="o">=</span> <span class="s1">&#39;center&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_folder</span> <span class="o">+</span> <span class="s1">&#39;/test_vis_from_scratch.png&#39;</span><span class="p">,</span> <span class="nb">format</span> <span class="o">=</span> <span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">600</span><span class="p">)</span></div>
+    
+    
+<div class="viewcode-block" id="triadic_network_vis_from_data"><a class="viewcode-back" href="../triadic_vis.html#triadic_vis.triadic_network_vis_from_data">[docs]</a><span class="k">def</span> <span class="nf">triadic_network_vis_from_data</span><span class="p">(</span><span class="n">triadic</span><span class="p">:</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">top</span><span class="p">:</span><span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visualize a triadic network from given data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    triadic : pandas.DataFrame</span>
+<span class="sd">        DataFrame containing triadic data.</span>
+<span class="sd">    top : int</span>
+<span class="sd">        Number of top records to visualize.</span>
+
+<span class="sd">    Keyword Args</span>
+<span class="sd">    ----------</span>
+<span class="sd">    save_folder : str</span>
+<span class="sd">        Folder path to save the visualization. Default is None.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">save_folder</span> <span class="o">=</span> <span class="s2">&quot;output&quot;</span>
+    <span class="k">try</span> <span class="p">:</span> 
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">save_folder</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span> <span class="p">:</span> 
+        <span class="k">pass</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">num</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">top</span><span class="p">),</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">600</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">cut</span> <span class="o">=</span> <span class="mf">1.00</span>
+    
+    <span class="n">triadic</span> <span class="o">=</span> <span class="n">triadic</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">top</span><span class="p">]</span>
+    <span class="n">triadic_nodes</span> <span class="o">=</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">triadic</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">triadic</span><span class="p">[</span><span class="mi">1</span><span class="p">]))))</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">triadic</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
+    <span class="n">pos_regulatory_nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">pos_regulatory_edges</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">neg_regulatory_nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">neg_regulatory_edges</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">connected_edges</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">triadic</span><span class="p">)):</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="n">triadic</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">node1</span> <span class="o">=</span> <span class="n">triadic</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">node2</span> <span class="o">=</span> <span class="n">triadic</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">sign</span> <span class="o">=</span> <span class="n">triadic</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">sign</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">regulatory_node</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">node1</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">node2</span><span class="p">)</span>
+            <span class="n">pos_regulatory_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">regulatory_node</span><span class="p">)</span>
+            <span class="n">pos_regulatory_edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">reg</span><span class="p">,</span><span class="n">regulatory_node</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">regulatory_node</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">node1</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">node2</span><span class="p">)</span>
+            <span class="n">neg_regulatory_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">regulatory_node</span><span class="p">)</span>
+            <span class="n">neg_regulatory_edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">reg</span><span class="p">,</span><span class="n">regulatory_node</span><span class="p">))</span>
+        <span class="n">connected_edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">node1</span><span class="p">,</span><span class="n">regulatory_node</span><span class="p">))</span>
+        <span class="n">connected_edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">node2</span><span class="p">,</span><span class="n">regulatory_node</span><span class="p">))</span>
+
+    <span class="n">regulatory_nodes</span> <span class="o">=</span> <span class="n">pos_regulatory_nodes</span> <span class="o">+</span> <span class="n">neg_regulatory_nodes</span>
+    <span class="n">regulatory_edges</span> <span class="o">=</span> <span class="n">pos_regulatory_edges</span> <span class="o">+</span> <span class="n">neg_regulatory_edges</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">regulatory_nodes</span><span class="p">)</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">connected_edges</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)):</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="n">connected_edges</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">pos_node1</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">connected_edges</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">pos_node2</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">connected_edges</span><span class="p">[(</span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">max_x</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">pos_node1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">pos_node2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">min_x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">pos_node1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">pos_node2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">max_y</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">pos_node1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">pos_node2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">pos_node1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">pos_node2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">pos_reg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">min_x</span> <span class="o">+</span> <span class="p">(</span><span class="n">max_x</span><span class="o">-</span><span class="n">min_x</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="n">min_y</span> <span class="o">+</span> <span class="p">(</span><span class="n">max_y</span><span class="o">-</span><span class="n">min_y</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)])</span>
+        <span class="n">pos</span><span class="p">[</span><span class="n">reg</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos_reg</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">regulatory_edges</span><span class="p">)</span>
+
+    <span class="c1"># nodes</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_nodes</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">nodelist</span> <span class="o">=</span> <span class="n">neg_regulatory_nodes</span><span class="p">,</span> \
+                           <span class="n">node_shape</span> <span class="o">=</span> <span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">node_size</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_nodes</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">nodelist</span> <span class="o">=</span> <span class="n">pos_regulatory_nodes</span><span class="p">,</span> \
+                           <span class="n">node_shape</span> <span class="o">=</span> <span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="n">node_size</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># edges</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span>
+        <span class="n">pos</span><span class="p">,</span>
+        <span class="n">edgelist</span> <span class="o">=</span> <span class="n">neg_regulatory_edges</span><span class="p">,</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">style</span> <span class="o">=</span> <span class="s1">&#39;dashed&#39;</span><span class="p">,</span>
+        <span class="n">edge_color</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">)</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span>
+        <span class="n">pos</span><span class="p">,</span>
+        <span class="n">edgelist</span> <span class="o">=</span> <span class="n">pos_regulatory_edges</span><span class="p">,</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">style</span> <span class="o">=</span> <span class="s1">&#39;dashed&#39;</span><span class="p">,</span>
+        <span class="n">edge_color</span> <span class="o">=</span> <span class="s2">&quot;green&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># labels</span>
+    <span class="n">node_labels</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">regulatory_nodes</span><span class="p">}</span>
+    <span class="n">pos_labels</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span><span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">regulatory_nodes</span><span class="p">}</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_labels</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">pos_labels</span><span class="p">,</span> <span class="n">node_labels</span><span class="p">,</span> <span class="n">font_size</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">font_color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_folder</span> <span class="o">+</span> <span class="s1">&#39;/triadic_vis_from_data.png&#39;</span><span class="p">,</span> <span class="nb">format</span> <span class="o">=</span> <span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">600</span><span class="p">)</span></div>
+    
+    
+<div class="viewcode-block" id="triadic_network_vis_from_data_and_graph"><a class="viewcode-back" href="../triadic_vis.html#triadic_vis.triadic_network_vis_from_data_and_graph">[docs]</a><span class="k">def</span> <span class="nf">triadic_network_vis_from_data_and_graph</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span><span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">,</span> <span class="n">triadic</span><span class="p">:</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">top</span><span class="p">:</span><span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visualize a triadic network from given data and an existing graph.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    graph : networkx.Graph</span>
+<span class="sd">        Existing graph.</span>
+<span class="sd">    triadic : pandas.DataFrame</span>
+<span class="sd">        DataFrame containing triadic data.</span>
+<span class="sd">    top : int</span>
+<span class="sd">        Number of top records to visualize.</span>
+
+<span class="sd">    Keyword Args</span>
+<span class="sd">    ----------</span>
+<span class="sd">    save_folder : str</span>
+<span class="sd">        Folder path to save the visualization. Default is None.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">save_folder</span> <span class="o">=</span> <span class="s2">&quot;output&quot;</span>
+    <span class="k">try</span> <span class="p">:</span> 
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">save_folder</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span> <span class="p">:</span> 
+        <span class="k">pass</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">num</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">600</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">cut</span> <span class="o">=</span> <span class="mf">1.00</span>
+    
+    <span class="n">triadic</span> <span class="o">=</span> <span class="n">triadic</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">top</span><span class="p">]</span>
+    <span class="n">triadic_nodes</span> <span class="o">=</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">triadic</span><span class="p">[</span><span class="s1">&#39;reg&#39;</span><span class="p">]))</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">triadic</span><span class="p">[</span><span class="s1">&#39;node1&#39;</span><span class="p">]))))</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">triadic</span><span class="p">[</span><span class="s1">&#39;node2&#39;</span><span class="p">])))</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">remove_edges_from</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">selfloop_edges</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
+    <span class="n">sub_graph</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">subgraph</span><span class="p">(</span><span class="n">triadic_nodes</span><span class="p">)</span>
+    <span class="n">pos_regulatory_nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">pos_regulatory_edges</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">neg_regulatory_nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">neg_regulatory_edges</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">connected_edges</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">triadic</span><span class="p">)):</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="n">triadic</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;reg&#39;</span><span class="p">]</span>
+        <span class="n">node1</span> <span class="o">=</span> <span class="n">triadic</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;node1&#39;</span><span class="p">]</span>
+        <span class="n">node2</span> <span class="o">=</span> <span class="n">triadic</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;node2&#39;</span><span class="p">]</span>
+        <span class="n">sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">triadic</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;corr&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">sign</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">regulatory_node</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">node1</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">node2</span><span class="p">)</span>
+            <span class="n">pos_regulatory_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">regulatory_node</span><span class="p">)</span>
+            <span class="n">pos_regulatory_edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">reg</span><span class="p">,</span><span class="n">regulatory_node</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">regulatory_node</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">node1</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">node2</span><span class="p">)</span>
+            <span class="n">neg_regulatory_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">regulatory_node</span><span class="p">)</span>
+            <span class="n">neg_regulatory_edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">reg</span><span class="p">,</span><span class="n">regulatory_node</span><span class="p">))</span>
+        <span class="n">connected_edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">node1</span><span class="p">,</span><span class="n">regulatory_node</span><span class="p">))</span>
+        <span class="n">connected_edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">node2</span><span class="p">,</span><span class="n">regulatory_node</span><span class="p">))</span>
+
+    <span class="n">structural_nodes</span> <span class="o">=</span> <span class="n">sub_graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">()</span>
+    <span class="n">structural_edges</span> <span class="o">=</span> <span class="n">sub_graph</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
+    <span class="n">regulatory_nodes</span> <span class="o">=</span> <span class="n">pos_regulatory_nodes</span> <span class="o">+</span> <span class="n">neg_regulatory_nodes</span>
+    <span class="n">regulatory_edges</span> <span class="o">=</span> <span class="n">pos_regulatory_edges</span> <span class="o">+</span> <span class="n">neg_regulatory_edges</span>
+
+    <span class="n">structural_graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+    <span class="n">structural_graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">structural_nodes</span><span class="p">)</span>
+    <span class="n">structural_graph</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">structural_edges</span><span class="p">)</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="n">structural_graph</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">connected_edges</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)):</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="n">connected_edges</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">pos_node1</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">connected_edges</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">pos_node2</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">connected_edges</span><span class="p">[(</span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">max_x</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">pos_node1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">pos_node2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">min_x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">pos_node1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">pos_node2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">max_y</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">pos_node1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">pos_node2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">pos_node1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">pos_node2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">pos_reg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">min_x</span> <span class="o">+</span> <span class="p">(</span><span class="n">max_x</span><span class="o">-</span><span class="n">min_x</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="n">min_y</span> <span class="o">+</span> <span class="p">(</span><span class="n">max_y</span><span class="o">-</span><span class="n">min_y</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)])</span>
+        <span class="n">pos</span><span class="p">[</span><span class="n">reg</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos_reg</span>
+    <span class="n">structural_graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">regulatory_nodes</span><span class="p">)</span>
+    <span class="n">structural_graph</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">regulatory_edges</span><span class="p">)</span>
+
+    <span class="c1"># nodes</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_nodes</span><span class="p">(</span><span class="n">structural_graph</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">nodelist</span> <span class="o">=</span> <span class="n">neg_regulatory_nodes</span><span class="p">,</span> \
+                           <span class="n">node_shape</span> <span class="o">=</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="n">node_color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">node_size</span> <span class="o">=</span> <span class="mi">40</span><span class="p">)</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_nodes</span><span class="p">(</span><span class="n">structural_graph</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">nodelist</span> <span class="o">=</span> <span class="n">pos_regulatory_nodes</span><span class="p">,</span> \
+                           <span class="n">node_shape</span> <span class="o">=</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="n">node_color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">node_size</span> <span class="o">=</span> <span class="mi">40</span><span class="p">)</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_nodes</span><span class="p">(</span><span class="n">structural_graph</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">nodelist</span> <span class="o">=</span> <span class="n">structural_nodes</span><span class="p">,</span> \
+                           <span class="n">node_color</span> <span class="o">=</span> <span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">node_size</span> <span class="o">=</span> <span class="mi">120</span><span class="p">)</span>
+
+    <span class="c1"># edges</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span><span class="n">structural_graph</span><span class="p">,</span>
+        <span class="n">pos</span><span class="p">,</span>
+        <span class="n">edgelist</span> <span class="o">=</span> <span class="n">neg_regulatory_edges</span><span class="p">,</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">style</span> <span class="o">=</span> <span class="s1">&#39;dashed&#39;</span><span class="p">,</span>
+        <span class="n">edge_color</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">)</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span><span class="n">structural_graph</span><span class="p">,</span>
+        <span class="n">pos</span><span class="p">,</span>
+        <span class="n">edgelist</span> <span class="o">=</span> <span class="n">pos_regulatory_edges</span><span class="p">,</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">style</span> <span class="o">=</span> <span class="s1">&#39;dashed&#39;</span><span class="p">,</span>
+        <span class="n">edge_color</span> <span class="o">=</span> <span class="s2">&quot;green&quot;</span><span class="p">)</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span>
+        <span class="n">structural_graph</span><span class="p">,</span>
+        <span class="n">pos</span><span class="p">,</span>
+        <span class="n">edgelist</span> <span class="o">=</span> <span class="n">structural_edges</span><span class="p">,</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">edge_color</span> <span class="o">=</span> <span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># labels</span>
+    <span class="n">node_labels</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">structural_nodes</span><span class="p">}</span>
+    <span class="n">pos_labels</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span><span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">structural_nodes</span><span class="p">}</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_labels</span><span class="p">(</span><span class="n">structural_graph</span><span class="p">,</span> <span class="n">pos_labels</span><span class="p">,</span> <span class="n">node_labels</span><span class="p">,</span> <span class="n">font_size</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="n">font_color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">verticalalignment</span> <span class="o">=</span> <span class="s1">&#39;bottom&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_folder</span> <span class="o">+</span> <span class="s1">&#39;/triadic_vis_from_data.png&#39;</span><span class="p">,</span> <span class="nb">format</span> <span class="o">=</span> <span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">600</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright (c) 2023: Anthony Baptista.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

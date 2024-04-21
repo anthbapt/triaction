@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>seaborn_grid &mdash; triaction 0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../content/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../content/tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../content/reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../content/cite.html">Citation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../content/changelog.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../content/contributing.html">Contributor Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">triaction</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">seaborn_grid</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for seaborn_grid</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.gridspec</span> <span class="k">as</span> <span class="nn">gridspec</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="SeabornFig2Grid"><a class="viewcode-back" href="../seaborn_grid.html#seaborn_grid.SeabornFig2Grid">[docs]</a><span class="k">class</span> <span class="nc">SeabornFig2Grid</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class for arranging Seaborn plots within a grid.</span>
+
+<span class="sd">    This class is designed to arrange Seaborn plots created using FacetGrid,</span>
+<span class="sd">    PairGrid, or JointGrid within a specified subplot specification of a Matplotlib</span>
+<span class="sd">    figure.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    seaborngrid : sns.axisgrid.FacetGrid or sns.axisgrid.PairGrid or sns.axisgrid.JointGrid</span>
+<span class="sd">        The Seaborn grid to be arranged within the specified subplot.</span>
+<span class="sd">    fig : matplotlib.figure.Figure</span>
+<span class="sd">        The Matplotlib figure to contain the Seaborn grid.</span>
+<span class="sd">    subplot_spec : matplotlib.gridspec.SubplotSpec</span>
+<span class="sd">        The subplot specification defining the position and size of the grid.</span>
+
+<span class="sd">    </span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fig : matplotlib.figure.Figure</span>
+<span class="sd">        The Matplotlib figure containing the Seaborn grid.</span>
+<span class="sd">    sg : sns.axisgrid.FacetGrid or sns.axisgrid.PairGrid or sns.axisgrid.JointGrid</span>
+<span class="sd">        The Seaborn grid being arranged.</span>
+<span class="sd">    subplot : matplotlib.gridspec.SubplotSpec</span>
+<span class="sd">        The subplot specification defining the position and size of the grid.</span>
+<span class="sd">    subgrid : matplotlib.gridspec.GridSpec</span>
+<span class="sd">        The grid specification created for the Seaborn grid.</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    ----------</span>
+<span class="sd">    - movegrid():</span>
+<span class="sd">        Move and resize a PairGrid or FacetGrid within the specified subplot.</span>
+<span class="sd">    - movejointgrid():</span>
+<span class="sd">        Move and resize a JointGrid within the specified subplot.</span>
+<span class="sd">    - moveaxes(ax, gs):</span>
+<span class="sd">        Move and resize a Matplotlib axes within the specified grid specification.</span>
+<span class="sd">    - finalize():</span>
+<span class="sd">        Finalize the arrangement by closing the original Seaborn figure and</span>
+<span class="sd">        connecting the Matplotlib figure to resize events.</span>
+<span class="sd">    - resize(evt = None):</span>
+<span class="sd">        Resize the Seaborn figure to match the size of the Matplotlib figure.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    ----------</span>
+<span class="sd">        To use this class to arrange a Seaborn grid within a Matplotlib figure,</span>
+<span class="sd">        create an instance of the class and call its constructor with the</span>
+<span class="sd">        appropriate Seaborn grid, figure, and subplot specification:</span>
+
+<span class="sd">        ```python</span>
+<span class="sd">        grid = SeabornFig2Grid(seaborn_grid, matplotlib_figure, subplot_spec)</span>
+<span class="sd">        ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seaborngrid</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">subplot_spec</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the SeabornFig2Grid instance.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        seaborngrid : sns.axisgrid.FacetGrid or sns.axisgrid.PairGrid or sns.axisgrid.JointGrid</span>
+<span class="sd">            The Seaborn grid to be arranged within the specified subplot.</span>
+<span class="sd">        fig : matplotlib.figure.Figure</span>
+<span class="sd">            The Matplotlib figure to contain the Seaborn grid.</span>
+<span class="sd">        subplot_spec : matplotlib.gridspec.SubplotSpec</span>
+<span class="sd">            The subplot specification defining the position and size of the grid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">fig</span> <span class="o">=</span> <span class="n">fig</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sg</span> <span class="o">=</span> <span class="n">seaborngrid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span> <span class="o">=</span> <span class="n">subplot_spec</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sg</span><span class="p">,</span> <span class="n">sns</span><span class="o">.</span><span class="n">axisgrid</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sg</span><span class="p">,</span> <span class="n">sns</span><span class="o">.</span><span class="n">axisgrid</span><span class="o">.</span><span class="n">PairGrid</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_movegrid</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sg</span><span class="p">,</span> <span class="n">sns</span><span class="o">.</span><span class="n">axisgrid</span><span class="o">.</span><span class="n">JointGrid</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_movejointgrid</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_finalize</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">_movegrid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Move PairGrid or Facetgrid to the specified subplot.&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resize</span><span class="p">()</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sg</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sg</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subgrid</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpecFromSubplotSpec</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">subplot_spec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_moveaxes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sg</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">subgrid</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span>
+
+
+    <span class="k">def</span> <span class="nf">_movejointgrid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Move Jointgrid to the specified subplot.&quot;&quot;&quot;</span>
+
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sg</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span><span class="o">.</span><span class="n">height</span>
+        <span class="n">h2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sg</span><span class="o">.</span><span class="n">ax_marg_x</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span><span class="o">.</span><span class="n">height</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">h</span> <span class="o">/</span> <span class="n">h2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resize</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subgrid</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpecFromSubplotSpec</span><span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">subplot_spec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subplot</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_moveaxes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sg</span><span class="o">.</span><span class="n">ax_joint</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">subgrid</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_moveaxes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sg</span><span class="o">.</span><span class="n">ax_marg_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">subgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_moveaxes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sg</span><span class="o">.</span><span class="n">ax_marg_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">subgrid</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+
+    <span class="k">def</span> <span class="nf">_moveaxes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">gs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Move and resize a Matplotlib axes within the specified grid specification.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ax : matplotlib.axes.Axes</span>
+<span class="sd">            The Matplotlib axes to be moved and resized.</span>
+<span class="sd">        gs : matplotlib.gridspec.GridSpec</span>
+<span class="sd">            The grid specification defining the position and size.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">figure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">_subplotspec</span> <span class="o">=</span> <span class="n">gs</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="n">gs</span><span class="o">.</span><span class="n">get_position</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_subplotspec</span><span class="p">(</span><span class="n">gs</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Finalize the arrangement by closing the original Seaborn figure and connecting to resize events.&quot;&quot;&quot;</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sg</span><span class="o">.</span><span class="n">fig</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_connect</span><span class="p">(</span><span class="s2">&quot;resize_event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resize</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_resize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resize the Seaborn figure to match the size of the Matplotlib figure.&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sg</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">get_size_inches</span><span class="p">())</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright (c) 2023: Anthony Baptista.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

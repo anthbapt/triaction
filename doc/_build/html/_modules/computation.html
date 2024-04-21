@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>computation &mdash; triaction 0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../content/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../content/tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../content/reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../content/cite.html">Citation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../content/changelog.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../content/contributing.html">Contributor Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">triaction</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">computation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for computation</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csc_matrix</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">iqr</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">sps</span>
+<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">kl_div</span>
+
+<div class="viewcode-block" id="create_node_edge_incidence_matrix"><a class="viewcode-back" href="../computation.html#computation.create_node_edge_incidence_matrix">[docs]</a><span class="k">def</span> <span class="nf">create_node_edge_incidence_matrix</span><span class="p">(</span><span class="n">edge_list</span><span class="p">:</span><span class="nb">list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a node-edge incidence matrix B from a given edge list.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    edge_list : list of tuples (i, j) where i &lt; j</span>
+<span class="sd">        The list of edges (i, j).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    B : numpy.ndarray of shape (n_nodes, n_edges)</span>
+<span class="sd">    The node-edge incidence matrix.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get the number of edges</span>
+    <span class="n">n_edges</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span>
+
+    <span class="c1"># If the number of edges is zero, return None</span>
+    <span class="k">if</span> <span class="n">n_edges</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="c1"># Create the node-edge incidence matrix</span>
+    <span class="n">b_ij</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_edges</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_edges</span> <span class="c1"># the (i,j)-th element of B in a sequence</span>
+    <span class="n">row_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">edge_list</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">edge_list</span><span class="p">]</span> <span class="c1"># the row indices (i) of the (i, j)-th element</span>
+    <span class="n">col_j</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_edges</span><span class="p">)]</span> <span class="o">*</span> <span class="mi">2</span> <span class="c1"># the column indices (i) of the (i, j)-th element</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">csc_matrix</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">b_ij</span><span class="p">),</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">row_i</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">col_j</span><span class="p">))),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">B</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="extract_by_std"><a class="viewcode-back" href="../computation.html#computation.extract_by_std">[docs]</a><span class="k">def</span> <span class="nf">extract_by_std</span><span class="p">(</span><span class="n">data</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">n_std</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">3.</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract the data within a given number of standard deviations from its mean.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : numpy.ndarray of shape (n_observations, )</span>
+<span class="sd">        The data.</span>
+<span class="sd">    n_std : float, optional</span>
+<span class="sd">        (default = 3.0)</span>
+<span class="sd">        The number of standard deviations to extract.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    data_min : float</span>
+<span class="sd">        The minimum value in the extracted range of data .</span>
+<span class="sd">    data_max : float</span>
+<span class="sd">        The maximum value in the extracted range of data.</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the data is not of shape (n_observations, ).</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check the shape of the data</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The data must be of shape (n_observations, ).&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Compute the mean and standard deviation</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    
+    <span class="n">data_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">n_std</span> <span class="o">*</span> <span class="n">std</span><span class="p">])</span>
+    <span class="n">data_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">n_std</span> <span class="o">*</span> <span class="n">std</span><span class="p">])</span>
+
+    <span class="c1"># Compute the core range</span>
+    <span class="k">return</span> <span class="n">data_min</span><span class="p">,</span> <span class="n">data_max</span></div>
+
+<div class="viewcode-block" id="freedman_diaconis_rule"><a class="viewcode-back" href="../computation.html#computation.freedman_diaconis_rule">[docs]</a><span class="k">def</span> <span class="nf">freedman_diaconis_rule</span><span class="p">(</span><span class="n">data</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">power</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">1.</span><span class="o">/</span><span class="mf">3.</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">2.</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the number of bins using the Freedman-Diaconis rule.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : numpy.ndarray of shape (n_variables, n_observations)</span>
+<span class="sd">        The data matrix.</span>
+<span class="sd">    power : float, optional</span>
+<span class="sd">        (default = 1./3.)</span>
+<span class="sd">        The power of the number of observations in the denominator.</span>
+<span class="sd">    factor : float, optional</span>
+<span class="sd">        (default = 2.)</span>
+<span class="sd">        The factor to multiply the width of bins.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bins_edges : numpy.ndarray of shape (n_bins,) or list of numpy.ndarray of shape (n_bins_{i},) [i = 1, ..., n_variables]</span>
+<span class="sd">        The bins edges.</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the data is not a one-dimensional or two-dimensional array.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The data must be a one-dimensional or two-dimensional array.&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Convert the data to a two-dimensional array</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># Get the number of observations and variables</span>
+    <span class="n">n_variables</span><span class="p">,</span> <span class="n">n_observations</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="c1"># Initialise the bins edges</span>
+    <span class="n">bin_edges</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># For each variable, compute the bins edges and append them to the list</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_variables</span><span class="p">):</span>
+        <span class="c1"># Compute the interquartile range</span>
+        <span class="n">IQR</span> <span class="o">=</span> <span class="n">iqr</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">rng</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">75</span><span class="p">))</span> 
+        
+        <span class="c1"># Compute the width of bins according to the Freedman-Diaconis rule</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="p">(</span><span class="n">factor</span> <span class="o">*</span> <span class="n">IQR</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">n_observations</span><span class="p">,</span> <span class="n">power</span><span class="p">)</span>
+
+        <span class="c1"># Check if the width is positive</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">width</span> <span class="o">&gt;</span> <span class="mf">0.</span><span class="p">)</span>
+
+        <span class="c1"># Generate the bins</span>
+        <span class="n">x_abs_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+        <span class="n">idx_upper</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x_abs_max</span> <span class="o">/</span> <span class="n">width</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">_bin_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">idx_upper</span> <span class="o">*</span> <span class="n">width</span><span class="p">,</span> <span class="n">idx_upper</span> <span class="o">*</span> <span class="n">width</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">idx_upper</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">bin_edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_bin_edges</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">n_variables</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">bin_edges</span> <span class="o">=</span> <span class="n">bin_edges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">bin_edges</span></div>
+
+<span class="k">def</span> <span class="nf">_check_data_shape</span><span class="p">(</span><span class="n">data</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check the shape of the data.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : numpy.ndarray</span>
+<span class="sd">        The data.</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the data is not of shape (n_observations,) or (1, n_observations).</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;The data must be of shape (n_observations,) or (1, n_observations).&#39;</span>
+        <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_generate_bins</span><span class="p">(</span><span class="n">data</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">bins</span><span class="p">:</span><span class="nb">str</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="ow">or</span> <span class="nb">int</span> <span class="ow">or</span> <span class="nb">list</span> <span class="ow">or</span> <span class="nb">tuple</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate the bins.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : numpy.ndarray of shape (n_observations,) or (1, n_observations) or (n_variables, n_observations)</span>
+<span class="sd">        The data.</span>
+<span class="sd">    bins : str or a sequence of int or int or list or tuple</span>
+<span class="sd">        The number of bins or the method to compute the number of bins.</span>
+<span class="sd">            - &#39;fd&#39; (str) : The number of bins is computed using the Freedman-Diaconis rule.</span>
+<span class="sd">            - n (int) : The number of bins for the variable.</span>
+<span class="sd">            - list or tuple (list or tuple of numpy.ndarray) : The bin edges for each variable.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    _bins : list of numpy.ndarray of shape (n_bins_{i},) [i = 1, ..., n_variables]</span>
+<span class="sd">        The bins edges for each variable.</span>
+<span class="sd">    n_bins : int</span>
+<span class="sd">        The number of bins for each variable.</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the bin edges are not monotonically increasing.</span>
+<span class="sd">        If the length of bins is not equal to the number of variables.</span>
+<span class="sd">        If the bin type is invalid.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check the shape of the data</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># Get the number of variables</span>
+    <span class="n">n_variables</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">n_variables</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">bins</span> <span class="o">==</span> <span class="s1">&#39;fd&#39;</span><span class="p">:</span>
+            <span class="n">bin_edges</span> <span class="o">=</span> <span class="n">freedman_diaconis_rule</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+            <span class="n">n_bins</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># Check if the bin edges are sorted</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s1">&#39;The bin edges must be monotonically increasing.&#39;</span>
+                <span class="p">)</span>
+            <span class="n">bin_edges</span> <span class="o">=</span> <span class="n">bins</span>
+            <span class="n">n_bins</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">max_amp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+            <span class="n">bin_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">max_amp</span><span class="p">,</span> <span class="n">max_amp</span><span class="p">,</span> <span class="n">bins</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">n_bins</span> <span class="o">=</span> <span class="n">bins</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid bins.&#39;</span><span class="p">)</span>
+        
+    <span class="k">elif</span> <span class="n">n_variables</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">bins</span> <span class="o">==</span> <span class="s1">&#39;fd&#39;</span><span class="p">:</span>
+            <span class="n">bin_edges</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">freedman_diaconis_rule</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_variables</span><span class="p">)</span>
+            <span class="p">]</span>
+            <span class="n">n_bins</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_variables</span><span class="p">)]</span>
+        
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">bin_edges</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">n_bins</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_variables</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s1">&#39;The length of bins must be equal to the number of variables.&#39;</span>
+                <span class="p">)</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bins</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                            <span class="s1">&#39;The bin edges must be monotonically increasing.&#39;</span>
+                        <span class="p">)</span>
+                    <span class="n">bin_edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                    <span class="n">n_bins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">item</span> <span class="o">==</span> <span class="s1">&#39;fd&#39;</span><span class="p">:</span>
+                    <span class="n">bin_edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">freedman_diaconis_rule</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+                    <span class="p">)</span>
+                    <span class="n">n_bins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                    <span class="n">bin_edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+                            <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">]),</span> 
+                            <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">]),</span> 
+                            <span class="n">num</span><span class="o">=</span><span class="n">item</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="n">n_bins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid bin type at index&quot;</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
+            
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">bin_edges</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+                    <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">d</span><span class="p">])),</span> 
+                    <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">d</span><span class="p">])),</span> 
+                    <span class="n">num</span><span class="o">=</span><span class="n">bins</span><span class="o">+</span><span class="mi">1</span>
+                <span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_variables</span><span class="p">)</span>
+            <span class="p">]</span>
+            <span class="n">n_bins</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">[</span><span class="n">d</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_variables</span><span class="p">)</span>
+            <span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid data.&#39;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">bin_edges</span><span class="p">,</span> <span class="n">n_bins</span>
+
+<div class="viewcode-block" id="estimate_pdf"><a class="viewcode-back" href="../computation.html#computation.estimate_pdf">[docs]</a><span class="k">def</span> <span class="nf">estimate_pdf</span><span class="p">(</span><span class="n">data</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">bins</span><span class="p">:</span><span class="nb">str</span> <span class="ow">or</span> <span class="nb">int</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="o">=</span><span class="s1">&#39;fd&#39;</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;kde&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimate the probability density function of the data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : numpy.ndarray of shape (n_observations,) or (1, n_observations)</span>
+<span class="sd">        The data.</span>
+<span class="sd">    bins : str or a sequence of int or int, optional</span>
+<span class="sd">        (default = None)</span>
+<span class="sd">        The number of bins or the method to compute the number of bins.</span>
+<span class="sd">        - &#39;fd&#39; (str) : The number of bins is computed using the Freedman-Diaconis rule.</span>
+<span class="sd">        - n (int) : The number of bins for the variable.</span>
+<span class="sd">        - numpy.ndarray : The bin edges for the variable.</span>
+<span class="sd">    method : str, optional</span>
+<span class="sd">        (default = &#39;kde&#39;)</span>
+<span class="sd">        The method to estimate the probability density function.</span>
+<span class="sd">        - &#39;hist&#39; : The probability density function is estimated by the histogram method.</span>
+<span class="sd">        - &#39;kde&#39; : The probability density function is estimated by the kernel density estimation.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pdf : numpy.ndarray of shape (n_bins, )</span>
+<span class="sd">        The estimated probability density function.</span>
+<span class="sd">    x : numpy.ndarray of shape (n_bins, )</span>
+<span class="sd">        The x values.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check the shape of the data</span>
+    <span class="n">_check_data_shape</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># Get the number of bins based on Freedman-Diaconis rule or user input</span>
+    <span class="n">bin_edges</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_generate_bins</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;hist&#39;</span><span class="p">:</span>
+        <span class="c1"># Create histogram</span>
+        <span class="n">pdf</span><span class="p">,</span> <span class="n">bin_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span>
+            <span class="n">data</span><span class="p">,</span> 
+            <span class="n">bins</span><span class="o">=</span><span class="n">bin_edges</span><span class="p">,</span>
+            <span class="n">density</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Calculate the x values corresponding to each bin</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">bin_edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">bin_edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;kde&#39;</span><span class="p">:</span>
+        <span class="c1"># Create kernel density estimator</span>
+        <span class="n">kernel</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">gaussian_kde</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        
+        <span class="c1"># Calculate the x values corresponding to each bin</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">bin_edges</span>
+        
+        <span class="c1"># Calculate the probability density function</span>
+        <span class="n">pdf</span> <span class="o">=</span> <span class="n">kernel</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Invalid method: method must be either &#39;hist&#39; or &#39;kde&#39;.&quot;</span>
+        <span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">pdf</span><span class="p">,</span> <span class="n">x</span></div>
+
+<div class="viewcode-block" id="estimate_pdf_joint"><a class="viewcode-back" href="../computation.html#computation.estimate_pdf_joint">[docs]</a><span class="k">def</span> <span class="nf">estimate_pdf_joint</span><span class="p">(</span><span class="n">data</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">bins</span><span class="p">:</span><span class="nb">str</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="ow">or</span> <span class="nb">int</span> <span class="ow">or</span> <span class="nb">list</span> <span class="ow">or</span> <span class="nb">tuple</span><span class="o">=</span><span class="s1">&#39;fd&#39;</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;kde&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimate the joint probability density function of the data by the histogram method.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : numpy.ndarray of shape (n_variables, n_observations)</span>
+<span class="sd">        The data.</span>
+<span class="sd">    bins : str or a sequence of int or int or list, optional</span>
+<span class="sd">        (default = None)</span>
+<span class="sd">        The number of bins or the method to compute the number of bins.</span>
+<span class="sd">        - &#39;fd&#39; (str) : The number of bins is computed using the Freedman-Diaconis rule.</span>
+<span class="sd">        - n_{1}, n_{2}, ..., n_{n_variables} (sequence of int) : The number of bins for each variable.</span>
+<span class="sd">        - n (int): The number of bins for all variables.</span>
+<span class="sd">        - list (list of numpy.ndarray) : The bin edges for each variable.</span>
+<span class="sd">    method : str, optional</span>
+<span class="sd">        (default = &#39;kde&#39;)</span>
+<span class="sd">        The method to estimate the probability density function.</span>
+<span class="sd">        - &#39;hist&#39; : The probability density function is estimated by the histogram method.</span>
+<span class="sd">        - &#39;kde&#39; : The probability density function is estimated by the kernel density estimation.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pdf_joint : numpy.ndarray of shape (n_bins_{1}, ..., n_bins_{n_variables})</span>
+<span class="sd">        The estimated probability density function.</span>
+<span class="sd">    x : list of numpy.ndarray of shape (n_bins_{i},) [i = 1, ..., n_variables]</span>
+<span class="sd">        The x values of the corresponding bins.</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check the shape of the data</span>
+    <span class="n">_check_data_shape</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># Get the number of variables</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">n_variables</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">estimate_pdf</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">n_variables</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;The data must be of shape (n_variables, n_observations).&#39;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Generate the bins</span>
+    <span class="n">bin_edges</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_generate_bins</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span>
+    
+    <span class="c1"># Estimation by the histogram method</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;hist&#39;</span><span class="p">:</span>
+        <span class="c1"># Create histogram</span>
+        <span class="n">pdf_joint</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogramdd</span><span class="p">(</span>
+            <span class="n">data</span><span class="p">,</span>
+            <span class="n">bins</span><span class="o">=</span><span class="n">bin_edges</span><span class="p">,</span>
+            <span class="n">density</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        
+        <span class="c1"># Calculate the x values corresponding to each bin</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_variables</span><span class="p">):</span>
+            <span class="n">x</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">d</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="n">d</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1"># Estimation by the kernel density estimation   </span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;kde&#39;</span><span class="p">:</span>
+        <span class="c1"># Create kernel density estimator</span>
+        <span class="n">kernel</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">gaussian_kde</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">bin_edges</span>
+
+        <span class="c1"># Generate the grid</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="o">*</span><span class="n">bin_edges</span><span class="p">)</span>
+
+        <span class="c1"># Calculate the probability density function at each point of the grid</span>
+        <span class="n">x_eval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">d</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">grid</span><span class="p">])</span>
+        <span class="n">pdf_joint</span> <span class="o">=</span> <span class="n">kernel</span><span class="p">(</span><span class="n">x_eval</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Invalid method: method must be either &#39;hist&#39; or &#39;kde&#39;.&quot;</span>
+        <span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">pdf_joint</span><span class="p">,</span> <span class="n">x</span></div>
+
+<div class="viewcode-block" id="estimate_pmf"><a class="viewcode-back" href="../computation.html#computation.estimate_pmf">[docs]</a><span class="k">def</span> <span class="nf">estimate_pmf</span><span class="p">(</span><span class="n">data</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">bins</span><span class="p">:</span><span class="nb">str</span> <span class="ow">or</span> <span class="nb">int</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="o">=</span><span class="s1">&#39;fd&#39;</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;kde&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimate the probability mass function of the data by the histogram method.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : numpy.ndarray of shape (n_observations,) or (1, n_observations)</span>
+<span class="sd">        The data.</span>
+<span class="sd">    bins : str or a sequence of int or int, optional</span>
+<span class="sd">        (default = None)</span>
+<span class="sd">        The number of bins or the method to compute the number of bins.</span>
+<span class="sd">        - &#39;fd&#39; : The number of bins is computed using the Freedman-Diaconis rule.</span>
+<span class="sd">        - n : The number of bins for the variable.</span>
+<span class="sd">        - np.ndarray : The bin edges for the variable.</span>
+<span class="sd">    method : str, optional</span>
+<span class="sd">        (default = &#39;kde&#39;)</span>
+<span class="sd">        The method to estimate the probability density function.</span>
+<span class="sd">        - &#39;hist&#39; : The probability density function is estimated by the histogram method.</span>
+<span class="sd">        - &#39;kde&#39; : The probability density function is estimated by the kernel density estimation.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pmf : numpy.ndarray of shape (n_bins, )</span>
+<span class="sd">        The estimated probability mass function of the data.</span>
+<span class="sd">    X : numpy.ndarray of shape (n_bins, )</span>
+<span class="sd">        The bin centers for variables.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check the shape of the data</span>
+    <span class="n">_check_data_shape</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># Get the number of bins based on Freedman-Diaconis rule or user input</span>
+        <span class="n">bin_edges</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_generate_bins</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span>
+        
+        <span class="n">pmf</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">estimate_pdf</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bin_edges</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+        <span class="n">pmf</span> <span class="o">=</span> <span class="n">pmf</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pmf</span><span class="p">)</span>
+        
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;The data must be of shape (n_observations,) or (1, n_observations). &#39;</span>
+            <span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">pmf</span><span class="p">,</span> <span class="n">x</span></div>
+
+<div class="viewcode-block" id="estimate_pmf_joint"><a class="viewcode-back" href="../computation.html#computation.estimate_pmf_joint">[docs]</a><span class="k">def</span> <span class="nf">estimate_pmf_joint</span><span class="p">(</span><span class="n">data</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">bins</span><span class="p">:</span><span class="nb">str</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="ow">or</span> <span class="nb">int</span> <span class="ow">or</span> <span class="nb">list</span> <span class="ow">or</span> <span class="nb">tuple</span><span class="o">=</span><span class="s1">&#39;fd&#39;</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;kde&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimate the joint probability mass function of the data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : numpy.ndarray of shape (n_variables, n_observations)</span>
+<span class="sd">        The data.</span>
+<span class="sd">    bins : str or a sequence of int or int or list, optional</span>
+<span class="sd">        (default = None)</span>
+<span class="sd">        The number of bins or the method to compute the number of bins.</span>
+<span class="sd">        - &#39;fd&#39; : The number of bins is computed using the Freedman-Diaconis rule.</span>
+<span class="sd">        - n_{1}, n_{2}, ..., n_{n_variable} : The number of bins for each variable.</span>
+<span class="sd">        - n : The number of bins for all variables.</span>
+<span class="sd">        - list : The bin edges for each variable.</span>
+<span class="sd">    method : str, optional</span>
+<span class="sd">        (default = &#39;kde&#39;)</span>
+<span class="sd">        The method to estimate the probability density function.</span>
+<span class="sd">        - &#39;hist&#39; : The probability density function is estimated by the histogram method.</span>
+<span class="sd">        - &#39;kde&#39; : The probability density function is estimated by the kernel density estimation.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pmf_joint : numpy.ndarray of shape (n_bins^{1}, n_bins^{2}, ..., n_bins^{n_variables})</span>
+<span class="sd">        The estimated probability mass function of the data.</span>
+<span class="sd">    x : list of numpy.ndarray of shape (n_bins^{i},}) [i = 1, ..., n_variables]</span>
+<span class="sd">        The x values of the corresponding bins.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check the shape of the data</span>
+    <span class="n">_check_data_shape</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># Get the number of variables</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">n_variables</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">n_variables</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Generate the bins</span>
+    <span class="n">bin_edges</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_generate_bins</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span>
+    
+    <span class="n">pdf_joint</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">estimate_pdf_joint</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bin_edges</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+    <span class="n">pmf_joint</span> <span class="o">=</span> <span class="n">pdf_joint</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pdf_joint</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">pmf_joint</span><span class="p">,</span> <span class="n">x</span></div>
+
+<div class="viewcode-block" id="estimate_mutual_information"><a class="viewcode-back" href="../computation.html#computation.estimate_mutual_information">[docs]</a><span class="k">def</span> <span class="nf">estimate_mutual_information</span><span class="p">(</span><span class="n">X</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Y</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">bins</span><span class="p">:</span><span class="nb">str</span> <span class="ow">or</span> <span class="nb">int</span><span class="o">=</span><span class="s1">&#39;fd&#39;</span><span class="p">,</span> <span class="n">pmf_method</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;kde&#39;</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;kl-div&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the mutual information between X and Y.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : numpy.ndarray of shape (n_observations,) or (1, n_observations)</span>
+<span class="sd">        The data.</span>
+<span class="sd">    Y : numpy.ndarray of shape (n_observations,) or (1, n_observations)</span>
+<span class="sd">        The data.</span>
+<span class="sd">    bins : str or a sequence of int or int, optional</span>
+<span class="sd">        (default = None)</span>
+<span class="sd">        The number of bins or the method to compute the number of bins.</span>
+<span class="sd">        - &#39;fd&#39; : The number of bins is computed using the Freedman-Diaconis rule.</span>
+<span class="sd">        - n : The number of bins for the variable. </span>
+<span class="sd">    pmf_method : str, optional</span>
+<span class="sd">        (default = &#39;kde&#39;)</span>
+<span class="sd">        The method to estimate the probability mass function.</span>
+<span class="sd">        - &#39;hist&#39; : The probability density function is estimated by the histogram method.</span>
+<span class="sd">        - &#39;kde&#39; : The probability density function is estimated by the kernel density estimation.</span>
+<span class="sd">    method : str, optional</span>
+<span class="sd">        (default = &#39;kl-div&#39;)</span>
+<span class="sd">        The method to estimate the mutual information.</span>
+<span class="sd">        - &#39;kl-div&#39; : The mutual information is calculated by the Kullback-Leibler divergence.</span>
+<span class="sd">        - &#39;entropy&#39; : The mutual information is calculated from entropies.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mi : float</span>
+<span class="sd">        The mutual information between X and Y.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Check the shape of the data</span>
+    <span class="n">_check_data_shape</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">_check_data_shape</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;The shape of X and Y must be equal.&#39;</span>
+        <span class="p">)</span>
+    
+    <span class="c1"># Shape the data</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    
+    <span class="c1"># Initialise the mutual information</span>
+    <span class="n">mi</span> <span class="o">=</span> <span class="mf">0.</span>
+
+    <span class="c1"># Estimate the probability mass functions of X and Y</span>
+    <span class="n">pmf_X</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">estimate_pmf</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">pmf_method</span><span class="p">)</span>
+    <span class="n">pmf_Y</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">estimate_pmf</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">pmf_method</span><span class="p">)</span>
+
+    <span class="c1"># Estimate the joint probability mass function of X and Y</span>
+    <span class="n">pmf_XY</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">estimate_pmf_joint</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)),</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">pmf_method</span><span class="p">)</span>
+
+
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;kl-div&#39;</span><span class="p">:</span>
+        <span class="c1"># Generate the outer product of the probability mass functions of X and Y</span>
+        <span class="n">outer_pmfXY</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">pmf_X</span><span class="p">,</span> <span class="n">pmf_Y</span><span class="p">)</span>
+
+        <span class="c1"># Calculate the conditional mutual information</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">pmf_X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span> <span class="c1"># Loop over X</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">pmf_Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span> <span class="c1"># Loop over Y</span>
+                <span class="n">mi</span> <span class="o">+=</span> <span class="n">kl_div</span><span class="p">(</span><span class="n">pmf_XY</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">outer_pmfXY</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">])</span>
+    
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;entropy&#39;</span><span class="p">:</span>
+        <span class="c1"># Calculate the entropies</span>
+        <span class="n">H_X</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">entropy</span><span class="p">(</span><span class="n">pmf_X</span><span class="p">)</span>
+        <span class="n">H_Y</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">entropy</span><span class="p">(</span><span class="n">pmf_Y</span><span class="p">)</span>
+        <span class="n">H_XY</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">entropy</span><span class="p">(</span><span class="n">pmf_XY</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+
+        <span class="c1"># Calculate the mutual information</span>
+        <span class="n">mi</span> <span class="o">=</span> <span class="n">H_XY</span> <span class="o">-</span> <span class="n">H_X</span> <span class="o">-</span> <span class="n">H_Y</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Invalid method: method must be either &#39;kl-div&#39; or &#39;entropy&#39;.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">mi</span></div>
+
+<div class="viewcode-block" id="covariance"><a class="viewcode-back" href="../computation.html#computation.covariance">[docs]</a><span class="k">def</span> <span class="nf">covariance</span><span class="p">(</span><span class="n">data</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the covariance matrix.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : numpy.ndarray of shape (n_nodes, n_timesteps, n_samples)</span>
+<span class="sd">        The time series data.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cov_np : numpy.ndarray of shape (n_samples, n_nodes * n_nodes)</span>
+<span class="sd">        The covariance matrix.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check the shape of the data</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;The data must be of shape (n_nodes, n_timesteps, n_variables).&#39;</span>
+        <span class="p">)</span>
+    
+    <span class="c1"># Get the number of samples</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">n_samples</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="c1"># Calculate the covariance matrix</span>
+    <span class="n">cov_np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+
+    <span class="c1"># Loop over samples</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">):</span>
+        <span class="n">X_i</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">i</span><span class="p">]</span>
+        <span class="n">cov_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">X_i</span><span class="p">)</span>
+        <span class="n">cov_np</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cov_i</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">cov_np</span></div>
+
+<div class="viewcode-block" id="conditional_correlation"><a class="viewcode-back" href="../computation.html#computation.conditional_correlation">[docs]</a><span class="k">def</span> <span class="nf">conditional_correlation</span><span class="p">(</span><span class="n">X</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Y</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Z</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">bins</span><span class="p">:</span><span class="nb">str</span> <span class="ow">or</span> <span class="nb">int</span><span class="o">=</span><span class="s1">&#39;fd&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the conditional variance.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ---------</span>
+<span class="sd">    X : numpy.ndarray of shape (n_observations,) or (1, n_observations)</span>
+<span class="sd">        The time series data.</span>
+<span class="sd">    Y : numpy.ndarray of shape (n_observations,) or (1, n_observations)</span>
+<span class="sd">        The time series data. </span>
+<span class="sd">    Z : numpy.ndarray of shape (n_observations,) or (1, n_observations)</span>
+<span class="sd">        The time series data. (condition)</span>
+<span class="sd">    bins : int or str, optional</span>
+<span class="sd">        (default = &#39;fd&#39;)</span>
+<span class="sd">        The number of bins or the method to compute the number of bins.</span>
+<span class="sd">        - &#39;fd&#39; : Freedman-Diaconis rule</span>
+<span class="sd">        - n (int) : The number of bins for the variable.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    corr_cond : numpy.ndarray of shape (n_bins,)</span>
+<span class="sd">        The conditional correlation.</span>
+<span class="sd">    z : numpy.ndarray of shape (n_bins,)</span>
+<span class="sd">        The bin values of the conditional variable.</span>
+<span class="sd">    corr_cond_err : numpy.ndarray of shape (n_bins,)</span>
+<span class="sd">        The standard error of the conditional correlation.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check the shape of the data</span>
+    <span class="n">_check_data_shape</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">_check_data_shape</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">_check_data_shape</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span> <span class="ow">or</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;The shape of X, Y, and Z must be equal.&#39;</span>
+        <span class="p">)</span>
+    
+    <span class="c1"># Shape the data</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">Z</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># Generate the bins</span>
+        <span class="n">bin_edges_z</span><span class="p">,</span> <span class="n">n_bins</span> <span class="o">=</span> <span class="n">_generate_bins</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span>
+
+        <span class="c1"># Initialise the conditional correlation</span>
+        <span class="n">cond_corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_bins</span><span class="p">)</span>
+        <span class="n">cond_corr_stderr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_bins</span><span class="p">)</span>
+        
+        <span class="c1"># Get the digitised data</span>
+        <span class="n">Z_dig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">digitize</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">bin_edges_z</span><span class="p">)</span>
+
+        <span class="c1"># Calculate the conditional correlation</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_bins</span><span class="p">):</span> <span class="c1"># Loop over bins</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Z_dig</span> <span class="o">==</span> <span class="n">j</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n_bins</span><span class="p">:</span>
+                <span class="n">cond_corr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cond_corr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">Z_dig</span> <span class="o">==</span> <span class="n">j</span><span class="p">],</span> <span class="n">Y</span><span class="p">[</span><span class="n">Z_dig</span> <span class="o">==</span> <span class="n">j</span><span class="p">])[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="n">cond_corr_stderr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">cond_corr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Z_dig</span> <span class="o">==</span> <span class="n">j</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">))</span>
+        
+        <span class="c1"># Calculate the bin values</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">bin_edges_z</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">bin_edges_z</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;The data must be of shape (n_observations,) or (n_observations, 1). &#39;</span>
+        <span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">cond_corr</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">cond_corr_stderr</span></div>
+
+<div class="viewcode-block" id="conditional_mutual_information"><a class="viewcode-back" href="../computation.html#computation.conditional_mutual_information">[docs]</a><span class="k">def</span> <span class="nf">conditional_mutual_information</span><span class="p">(</span><span class="n">X</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Y</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Z</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">bins</span><span class="p">:</span><span class="nb">str</span> <span class="ow">or</span> <span class="nb">int</span><span class="o">=</span><span class="s1">&#39;fd&#39;</span><span class="p">,</span> <span class="n">pmf_method</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;kde&#39;</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;kl-div&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the conditional mutual information between X and Y given Z.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : numpy.ndarray of shape (n_observations, ) or (1, n_observations)</span>
+<span class="sd">        The data.</span>
+<span class="sd">    Y : numpy.ndarray of shape (n_observations, ) or (1, n_observations)</span>
+<span class="sd">        The data.</span>
+<span class="sd">    Z : numpy.ndarray of shape (n_observations, ) or (1, n_observations)</span>
+<span class="sd">        The data to be conditioned.</span>
+<span class="sd">    bins : str or a sequence of int or int, optional</span>
+<span class="sd">        (default = None)</span>
+<span class="sd">        The number of bins or the method to compute the number of bins.</span>
+<span class="sd">        - &#39;fd&#39; : The number of bins is computed using the Freedman-Diaconis rule.</span>
+<span class="sd">        - n_1, n_2, ..., n_n : The number of bins for each variable.</span>
+<span class="sd">        - n : The number of bins for all variables.</span>
+<span class="sd">    pmf_method : str, optional</span>
+<span class="sd">        (default = &#39;kde&#39;)</span>
+<span class="sd">        The method to estimate the probability mass function.</span>
+<span class="sd">        - &#39;hist&#39; : The probability density function is estimated by the histogram method.</span>
+<span class="sd">        - &#39;kde&#39; : The probability density function is estimated by the kernel density estimation.</span>
+<span class="sd">    method : str, optional</span>
+<span class="sd">        (default = &#39;kl-div&#39;)</span>
+<span class="sd">        The method to estimate the mutual information.</span>
+<span class="sd">        - &#39;kl-div&#39; : The mutual information is calculated by the Kullback-Leibler divergence.</span>
+<span class="sd">        - &#39;entropy&#39; : The mutual information is calculated from entropies.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cmi : numpy.ndarray of shape (n_bins,)</span>
+<span class="sd">        The conditional mutual information between X and Y given Z=z for each z in Z.</span>
+<span class="sd">    pmf_Z : numpy.ndarray of shape (n_bins,)</span>
+<span class="sd">        The probability mass function of Z.</span>
+<span class="sd">    z : numpy.ndarray of shape (n_bins,)</span>
+<span class="sd">        The z values of the corresponding bins.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check the shape of the data</span>
+    <span class="n">_check_data_shape</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">_check_data_shape</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">_check_data_shape</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span> <span class="ow">or</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;The shape of X, Y, and Z must be equal.&#39;</span>
+        <span class="p">)</span>
+    
+    <span class="c1"># Shape the data</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">Z</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># Generate the bins</span>
+        <span class="n">bin_edges_z</span><span class="p">,</span> <span class="n">n_bins</span> <span class="o">=</span> <span class="n">_generate_bins</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span>
+
+        <span class="c1"># Get the digitised data</span>
+        <span class="n">Z_dig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">digitize</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">bin_edges_z</span><span class="p">)</span>
+        <span class="n">pmf_Z</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">estimate_pmf</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bin_edges_z</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">pmf_method</span><span class="p">)</span>
+
+        <span class="c1"># Initialise the conditional mutual information        </span>
+        <span class="n">cmi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_bins</span><span class="p">)</span>
+
+        <span class="c1"># Loop over bins</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_bins</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Z_dig</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n_bins</span><span class="p">:</span>
+                <span class="n">cmi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cmi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">estimate_mutual_information</span><span class="p">(</span>
+                    <span class="n">X</span><span class="p">[</span><span class="n">Z_dig</span> <span class="o">==</span> <span class="n">i</span><span class="p">],</span> 
+                    <span class="n">Y</span><span class="p">[</span><span class="n">Z_dig</span> <span class="o">==</span> <span class="n">i</span><span class="p">],</span> 
+                    <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> 
+                    <span class="n">pmf_method</span><span class="o">=</span><span class="n">pmf_method</span><span class="p">,</span> 
+                    <span class="n">method</span><span class="o">=</span><span class="n">method</span>
+                <span class="p">)</span>
+            
+        <span class="c1"># Calculate the bin values</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">bin_edges_z</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">bin_edges_z</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;The data to be conditioned on must be of shape (n_observations,) or (1, n_observations).&#39;</span>
+        <span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">cmi</span><span class="p">,</span> <span class="n">pmf_Z</span><span class="p">,</span> <span class="n">z</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright (c) 2023: Anthony Baptista.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

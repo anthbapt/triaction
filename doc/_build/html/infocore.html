@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>infocore module &mdash; triaction 0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="content/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/cite.html">Citation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/changelog.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/contributing.html">Contributor Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">triaction</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">infocore module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/infocore.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-infocore">
+<span id="infocore-module"></span><h1>infocore module<a class="headerlink" href="#module-infocore" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="infocore.Theta_score_null_model">
+<span class="sig-prename descclassname"><span class="pre">infocore.</span></span><span class="sig-name descname"><span class="pre">Theta_score_null_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeseries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nrunmax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Gaussian_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mutual_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extended</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/infocore.html#Theta_score_null_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infocore.Theta_score_null_model" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate Theta scores and statistical significance from null model simulations for mutual conditional information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeseries</strong> (<em>numpy.ndarray</em>) – 2D array representing the time series data.</p></li>
+<li><p><strong>I</strong> (<em>list</em>) – List of indices specifying rows of interest in the time series.</p></li>
+<li><p><strong>num</strong> (<em>int</em>) – Number of intervals for analysis.</p></li>
+<li><p><strong>tlen</strong> (<em>int</em>) – Length of the time window considered for analysis.</p></li>
+<li><p><strong>nrunmax</strong> (<em>int</em>) – Maximum number of runs for null model simulation.</p></li>
+<li><p><strong>Gaussian_version</strong> (<em>bool</em>) – If True, uses a multivariate normal distribution as a null model; otherwise, uses shuffled data. Defaults to True.</p></li>
+<li><p><strong>Mutual_version</strong> (<em>bool</em>) – If True, performs mutual information analysis; otherwise, performs correlation analysis. Defaults to True.</p></li>
+<li><p><strong>extended</strong> (<em>bool</em>) – If True, performs extended mutual information analysis; otherwise, performs standard mutual information analysis. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.ndarray</em>) – Original input data for analysis.</p></li>
+<li><p><strong>Xz</strong> (<em>numpy.ndarray</em>) – Sorted input data for analysis.</p></li>
+<li><p><strong>Xz_null</strong> (<em>numpy.ndarray</em>) – Sorted null model input data.</p></li>
+<li><p><strong>MIC</strong> (<em>float</em>) – Mutual information or correlation value for the original data.</p></li>
+<li><p><strong>Theta</strong> (<em>float</em>) – Theta score, a measure of the difference between the original data and the null model.</p></li>
+<li><p><strong>Theta_T</strong> (<em>float</em>) – Theta score for the range of the original data.</p></li>
+<li><p><strong>Theta_Tn</strong> (<em>float</em>) – Theta score for the maximum difference between consecutive values in the original data.</p></li>
+<li><p><strong>Sigma</strong> (<em>float</em>) – Standard deviation of mutual information values for the original data.</p></li>
+<li><p><strong>Sigma_null_list</strong> (<em>numpy.ndarray</em>) – List of standard deviations of mutual information values from null model simulations.</p></li>
+<li><p><strong>P</strong> (<em>float</em>) – P-value indicating the statistical significance of Theta score.</p></li>
+<li><p><strong>P_T</strong> (<em>float</em>) – P-value indicating the statistical significance of Theta_T score.</p></li>
+<li><p><strong>P_Tn</strong> (<em>float</em>) – P-value indicating the statistical significance of Theta_Tn score.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infocore.correlation_analysis_continuous">
+<span class="sig-prename descclassname"><span class="pre">infocore.</span></span><span class="sig-name descname"><span class="pre">correlation_analysis_continuous</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeseries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/infocore.html#correlation_analysis_continuous"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infocore.correlation_analysis_continuous" title="Permalink to this definition"></a></dt>
+<dd><p>Analyses the correlation between continuous variables in a time series.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeseries</strong> (<em>numpy.ndarray</em>) – 2D array representing the time series data.</p></li>
+<li><p><strong>I</strong> (<em>list</em>) – List of indices specifying rows of interest in the time series.</p></li>
+<li><p><strong>num</strong> (<em>int</em>) – Number of intervals for analysis.</p></li>
+<li><p><strong>tlen</strong> (<em>int</em>) – Length of the time window considered for analysis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>C</strong> (<em>float</em>) – Mean correlation between the first and second rows of interest.</p></li>
+<li><p><strong>Cz</strong> (<em>numpy.ndarray</em>) – Correlation values for each interval.</p></li>
+<li><p><strong>Sigma</strong> (<em>float</em>) – Variance of correlation values.</p></li>
+<li><p><strong>T</strong> (<em>float</em>) – Range of correlation values across intervals.</p></li>
+<li><p><strong>Tn</strong> (<em>float</em>) – Maximum difference between consecutive correlation values.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infocore.freedman_diaconis">
+<span class="sig-prename descclassname"><span class="pre">infocore.</span></span><span class="sig-name descname"><span class="pre">freedman_diaconis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">returnas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'bins'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/infocore.html#freedman_diaconis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infocore.freedman_diaconis" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the optimal bin width for a histogram using the Freedman-Diaconis rule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>numpy.ndarray</em>) – Input data for which the bin width is computed.</p></li>
+<li><p><strong>returnas</strong> (<em>str</em>) – If “bins”, returns the number of bins; if “width”, returns the bin width. Defaults to “bins”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>result</strong> – The computed result based on the specified returnas parameter.
+- If returnas is “bins”, returns the estimated number of bins for a histogram.
+- If returnas is “width”, returns the optimal bin width for a histogram.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infocore.inverse_ising2">
+<span class="sig-prename descclassname"><span class="pre">infocore.</span></span><span class="sig-name descname"><span class="pre">inverse_ising2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'pseudo'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/infocore.html#inverse_ising2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infocore.inverse_ising2" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the inverse Ising model for given Ising model parameters in a simplified 2-spin system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.ndarray</em>) – Binary data for the X variable.</p></li>
+<li><p><strong>Y</strong> (<em>numpy.ndarray</em>) – Binary data for the Y variable.</p></li>
+<li><p><strong>model</strong> (<em>str</em>) – Type of model to use. Options: ‘pseudo’, ‘MCH’, ‘MPF’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>hx</strong> (<em>float</em>) – Fields for X in the Ising model</p></li>
+<li><p><strong>hy</strong> (<em>float</em>) – Fields for Y in the Ising model</p></li>
+<li><p><strong>Jxy</strong> (<em>float</em>) – Coupling between X and Y in the Ising model</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>For binary data represented by indicator matrices X and Y in a 2-spin system.</p></li>
+<li><p>Model options: ‘pseudo’ (gradient descent), ‘MCH’ (Monte Carlo History), ‘MPF’ (Mean-Field Perturbation).</p></li>
+<li><p>Couplings and fields are inferred based on the selected model.</p></li>
+<li><p>N = number of spins, t = time to converge (t&lt;&lt;T (iteration))</p></li>
+<li><p>n = number of samples, R = a real value</p></li>
+<li><p>pseudo -&gt; O(RN^{2}) for gradient descent and O(RN^{3}) for Hessian</p></li>
+<li><p>MCH -&gt; O(tnN^{2})</p></li>
+<li><p>MPF -&gt; O(RGN^{2}) and G ~ 2^{N} (number of neighbors)</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infocore.inverse_ising_null_model">
+<span class="sig-prename descclassname"><span class="pre">infocore.</span></span><span class="sig-name descname"><span class="pre">inverse_ising_null_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalised</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'pseudo'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hypothesis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/infocore.html#inverse_ising_null_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infocore.inverse_ising_null_model" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the inverse Ising null model for given Ising model parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>:numpy.ndarray</em>) – Binary data for the X variable.</p></li>
+<li><p><strong>Y</strong> (<em>:numpy.ndarray</em>) – Binary data for the Y variable.</p></li>
+<li><p><strong>Z</strong> (<em>:numpy.ndarray</em>) – Binary data for the Z variable.</p></li>
+<li><p><strong>normalised</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, normalize the computed standard deviations.</p></li>
+<li><p><strong>model</strong> (<em>str</em>) – Type of null model to use. Options: ‘pseudo’, ‘MCH’, ‘MPF’.</p></li>
+<li><p><strong>hypothesis</strong> (<em>int</em>) – Specify a hypothesis to constrain certain coupling terms. Options: 1, 2, 3.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>sigmaij</strong> – Standard deviation of the difference between observed and null model correlations for X and Y.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>For binary data represented by indicator matrices X, Y, and Z.</p></li>
+<li><p>Model options: ‘pseudo’ (gradient descent), ‘MCH’ (Monte Carlo History), ‘MPF’ (Mean-Field Perturbation).</p></li>
+<li><p>Hypothesis options: 1, 2, 3, to constrain specific coupling terms.</p></li>
+<li><p>Standard deviation is computed for the difference between observed and null model correlations.</p></li>
+<li><p>N = number of spins, t = time to converge (t&lt;&lt;T (iteration))</p></li>
+<li><p>n = number of samples, R = a real value</p></li>
+<li><p>pseudo -&gt; O(RN^{2}) for gradient descent and O(RN^{3}) for Hessian</p></li>
+<li><p>MCH -&gt; O(tnN^{2})</p></li>
+<li><p>MPF -&gt; O(RGN^{2}) and G ~ 2^{N} (number of neighbors)</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infocore.learn_settings">
+<span class="sig-prename descclassname"><span class="pre">infocore.</span></span><span class="sig-name descname"><span class="pre">learn_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/infocore.html#learn_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infocore.learn_settings" title="Permalink to this definition"></a></dt>
+<dd><p>Determine settings based on the iteration counter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>i</strong> (<em>int</em>) – Iteration counter.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>out</strong> – A dictionary containing the following settings:
+- ‘maxdlamda’ (float): Maximum change allowed in any given parameter.
+- ‘eta’ (float): Multiplicative factor where d(parameter) = (error in observable) * eta.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infocore.mch_approximation">
+<span class="sig-prename descclassname"><span class="pre">infocore.</span></span><span class="sig-name descname"><span class="pre">mch_approximation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dlamda</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/infocore.html#mch_approximation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infocore.mch_approximation" title="Permalink to this definition"></a></dt>
+<dd><p>Make a Monte Carlo Histogram (MCH) approximation step for the Ising model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>samples</strong> (<em>numpy.ndarray</em>) – Array of Ising model samples.</p></li>
+<li><p><strong>dlamda</strong> (<em>numpy.ndarray</em>) – Array of changes in parameters for the Ising model.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>predsisj</strong> – Predicted values for the mean Ising model observables.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>AssertionError</strong> – If the predicted values are beyond the valid range [-1, 1].:</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infocore.mindy">
+<span class="sig-prename descclassname"><span class="pre">infocore.</span></span><span class="sig-name descname"><span class="pre">mindy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeseries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/infocore.html#mindy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infocore.mindy" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the MINDy measure between continuous variables.
+Wang, K., Saito, M., Bisikirska, B. et al. Nat Biotechnol 27, 829–837 (2009).
+<a class="reference external" href="https://doi.org/10.1038/nbt.1563">https://doi.org/10.1038/nbt.1563</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeseries</strong> (<em>numpy.ndarray</em>) – 2D array representing the time series data.</p></li>
+<li><p><strong>I</strong> (<em>list</em>) – List of indices specifying rows of interest in the time series.</p></li>
+<li><p><strong>tlen</strong> (<em>int</em>) – Length of the time window considered for analysis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>MINDY</strong> (<em>float</em>) – Mutually Information Normalized Difference Yield.</p></li>
+<li><p><strong>MI1</strong> (<em>float</em>) – Mutual information of the first third of the data.</p></li>
+<li><p><strong>MI2</strong> (<em>float</em>) – Mutual information of the last third of the data.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infocore.mindy_final">
+<span class="sig-prename descclassname"><span class="pre">infocore.</span></span><span class="sig-name descname"><span class="pre">mindy_final</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeseries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/infocore.html#mindy_final"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infocore.mindy_final" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the MINDy measure between continuous variables.
+Wang, K., Saito, M., Bisikirska, B. et al. Nat Biotechnol 27, 829–837 (2009).
+<a class="reference external" href="https://doi.org/10.1038/nbt.1563">https://doi.org/10.1038/nbt.1563</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeseries</strong> (<em>numpy.ndarray</em>) – 2D array representing the time series data.</p></li>
+<li><p><strong>I</strong> (<em>list</em>) – List of indices specifying rows of interest in the time series.</p></li>
+<li><p><strong>tlen</strong> (<em>int</em>) – Length of the time window considered for analysis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>MINDY</strong> (<em>float</em>) – Mutually Information Normalized Difference Yield.</p></li>
+<li><p><strong>MI1</strong> (<em>float</em>) – Mutual information of the first third of the data.</p></li>
+<li><p><strong>MI2</strong> (<em>float</em>) – Mutual information of the last third of the data.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infocore.mutual_information">
+<span class="sig-prename descclassname"><span class="pre">infocore.</span></span><span class="sig-name descname"><span class="pre">mutual_information</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeseries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/infocore.html#mutual_information"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infocore.mutual_information" title="Permalink to this definition"></a></dt>
+<dd><p>Computes mutual information measures between continuous variables in a time series.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeseries</strong> (<em>numpy.ndarray</em>) – 2D array representing the time series data.</p></li>
+<li><p><strong>I</strong> (<em>list</em>) – List of indices specifying rows of interest in the time series.</p></li>
+<li><p><strong>num</strong> (<em>int</em>) – Number of intervals for analysis.</p></li>
+<li><p><strong>tlen</strong> (<em>int</em>) – Length of the time window considered for analysis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>MI</strong> (<em>float</em>) – Mutual information between the first and second rows of interest.</p></li>
+<li><p><strong>MIz</strong> (<em>numpy.ndarray</em>) – Mutual information values for each interval.</p></li>
+<li><p><strong>MIC</strong> (<em>float</em>) – Mean mutual information across intervals.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infocore.mutual_information_analysis_continuous">
+<span class="sig-prename descclassname"><span class="pre">infocore.</span></span><span class="sig-name descname"><span class="pre">mutual_information_analysis_continuous</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeseries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/infocore.html#mutual_information_analysis_continuous"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infocore.mutual_information_analysis_continuous" title="Permalink to this definition"></a></dt>
+<dd><p>Analyses mutual information between continuous variables in a time series.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeseries</strong> (<em>numpy.ndarray</em>) – 2D array representing the time series data.</p></li>
+<li><p><strong>I</strong> (<em>list</em>) – List of indices specifying rows of interest in the time series.</p></li>
+<li><p><strong>num</strong> (<em>int</em>) – Number of intervals for analysis.</p></li>
+<li><p><strong>tlen</strong> (<em>int</em>) – Length of the time window considered for analysis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>MI</strong> (<em>float</em>) – Mutual information between the first and second rows of interest.</p></li>
+<li><p><strong>MIz</strong> (<em>numpy.ndarray</em>) – Mutual information values for each interval.</p></li>
+<li><p><strong>MIC</strong> (<em>float</em>) – Mean mutual information across intervals.</p></li>
+<li><p><strong>Sigma</strong> (<em>float</em>) – Standard deviation of mutual information values.</p></li>
+<li><p><strong>T</strong> (<em>float</em>) – Range of mutual information values across intervals.</p></li>
+<li><p><strong>Tn</strong> (<em>float</em>) – Maximum difference between consecutive mutual information values.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infocore.mutual_information_analysis_continuous_extended">
+<span class="sig-prename descclassname"><span class="pre">infocore.</span></span><span class="sig-name descname"><span class="pre">mutual_information_analysis_continuous_extended</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeseries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/infocore.html#mutual_information_analysis_continuous_extended"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infocore.mutual_information_analysis_continuous_extended" title="Permalink to this definition"></a></dt>
+<dd><p>Extended analysis of mutual information between continuous variables in a time series.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeseries</strong> (<em>numpy.ndarray</em>) – 2D array representing the time series data.</p></li>
+<li><p><strong>I</strong> (<em>list</em>) – List of indices specifying rows of interest in the time series.</p></li>
+<li><p><strong>num</strong> (<em>int</em>) – Number of intervals for analysis.</p></li>
+<li><p><strong>tlen</strong> (<em>int</em>) – Length of the time window considered for analysis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>MI</strong> (<em>float</em>) – Mutual information between the first and second rows of interest.</p></li>
+<li><p><strong>MIz</strong> (<em>numpy.ndarray</em>) – Mutual information values for each interval.</p></li>
+<li><p><strong>MIC</strong> (<em>float</em>) – Mean mutual information across intervals.</p></li>
+<li><p><strong>Corr_Sigma</strong> (<em>float</em>) – Pearson correlation between mean Zn values and MIz.</p></li>
+<li><p><strong>Sigma</strong> (<em>float</em>) – Standard deviation of mutual information values.</p></li>
+<li><p><strong>T</strong> (<em>float</em>) – Range of mutual information values across intervals.</p></li>
+<li><p><strong>Tn</strong> (<em>float</em>) – Maximum difference between consecutive mutual information values.</p></li>
+<li><p><strong>MINDY</strong> (<em>float</em>) – Absolute difference between mutual information values of the first and last third of the data.</p></li>
+<li><p><strong>MI1</strong> (<em>float</em>) – Mutual information of the first third of the data.</p></li>
+<li><p><strong>MI2</strong> (<em>float</em>) – Mutual information of the last third of the data.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infocore.null_model">
+<span class="sig-prename descclassname"><span class="pre">infocore.</span></span><span class="sig-name descname"><span class="pre">null_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeseries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nrunmax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Gaussian_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mutual_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/infocore.html#null_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infocore.null_model" title="Permalink to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Compute the null model for mutual conditional information using Gaussian distribution or shuffled data.</p>
+<dl class="simple">
+<dt>timeseries<span class="classifier">numpy.ndarray</span></dt><dd><p>2D array representing the time series data.</p>
+</dd>
+<dt>I<span class="classifier">list</span></dt><dd><p>List of indices specifying rows of interest in the time series.</p>
+</dd>
+<dt>num<span class="classifier">int</span></dt><dd><p>Number of intervals for analysis.</p>
+</dd>
+<dt>tlen<span class="classifier">int</span></dt><dd><p>Length of the time window considered for analysis.</p>
+</dd>
+<dt>nrunmax<span class="classifier">int</span></dt><dd><p>Maximum number of runs for null model simulation.</p>
+</dd>
+<dt>Gaussian_version<span class="classifier">bool</span></dt><dd><p>If True, uses a multivariate normal distribution as a null model; otherwise, uses shuffled data.</p>
+</dd>
+<dt>Mutual_version<span class="classifier">bool</span></dt><dd><p>If True, performs mutual information analysis; otherwise, performs correlation analysis.</p>
+</dd>
+<dt>model<span class="classifier">int</span></dt><dd><p>Null model type (0-7). Defaults to None.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Sigma_mean_null<span class="classifier">float</span></dt><dd><p>Mean standard deviation of mutual information values in null model.</p>
+</dd>
+<dt>T_mean_null<span class="classifier">float</span></dt><dd><p>Mean range of mutual information values in null model.</p>
+</dd>
+<dt>Tn_mean_null<span class="classifier">float</span></dt><dd><p>Mean maximum difference between consecutive mutual information values in null model.</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>Notes</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>Compute the Gaussian null model for the mutual conditional information.</dt><dd><ul>
+<li><p>Z-Y-X-Z: 0</p></li>
+<li><p>Z Y-X-Z: 1</p></li>
+<li><p>Z-Y X-Z: 2</p></li>
+<li><p>Z-Y-X Z: 3</p></li>
+<li><p>Z Y X-Z: 4</p></li>
+<li><p>Z-Y X Z: 5</p></li>
+<li><p>Z Y-X Z: 6</p></li>
+<li><p>Z Y X Z: 7</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infocore.null_model_results">
+<span class="sig-prename descclassname"><span class="pre">infocore.</span></span><span class="sig-name descname"><span class="pre">null_model_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cov</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeseries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Sigma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nrunmax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Gaussian_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mutual_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/infocore.html#null_model_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infocore.null_model_results" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the results of the null model for mutual conditional information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>M</strong> (<em>numpy.ndarray</em>) – Mean vector for the multivariate normal distribution.</p></li>
+<li><p><strong>Cov</strong> (<em>numpy.ndarray</em>) – Covariance matrix for the multivariate normal distribution.</p></li>
+<li><p><strong>timeseries</strong> (<em>numpy.ndarray</em>) – 2D array representing the time series data.</p></li>
+<li><p><strong>I</strong> (<em>list</em>) – List of indices specifying rows of interest in the time series.</p></li>
+<li><p><strong>num</strong> (<em>int</em>) – Number of intervals for analysis.</p></li>
+<li><p><strong>tlen</strong> (<em>int</em>) – Length of the time window considered for analysis.</p></li>
+<li><p><strong>Sigma</strong> (<em>float</em>) – Standard deviation of mutual information</p></li>
+<li><p><strong>T</strong> (<em>float</em>) – Range of mutual information values in the original data.</p></li>
+<li><p><strong>Tn</strong> (<em>float</em>) – Maximum difference between consecutive mutual information values in the original data.</p></li>
+<li><p><strong>nrunmax</strong> (<em>int</em>) – Maximum number of runs for null model simulation.</p></li>
+<li><p><strong>Gaussian_version</strong> (<em>bool</em>) – If True, uses a multivariate normal distribution as a null model.</p></li>
+<li><p><strong>Mutual_version</strong> (<em>bool</em>) – If True, performs mutual information analysis; otherwise, performs correlation analysis.</p></li>
+<li><p><strong>model</strong> (<em>int</em>) – Null model type (0-7). Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>X_null</strong> (<em>float</em>) – Mean value of mutual information or correlation in null model.</p></li>
+<li><p><strong>Xz_null</strong> (<em>numpy.ndarray</em>) – Values of mutual information or correlation for each interval in null model.</p></li>
+<li><p><strong>Theta</strong> (<em>float</em>) – Normalized difference in standard deviation of the original and null models.</p></li>
+<li><p><strong>Theta_T</strong> (<em>float</em>) – Normalized difference in range of the original and null models.</p></li>
+<li><p><strong>Theta_Tn</strong> (<em>float</em>) – Normalized difference in maximum difference of the original and null models.</p></li>
+<li><p><strong>Sigma</strong> (<em>float</em>) – Standard deviation of mutual information values in the original data.</p></li>
+<li><p><strong>Sigma_null_list</strong> (<em>numpy.ndarray</em>) – Standard deviation of mutual information values for each run in null model.</p></li>
+<li><p><strong>P</strong> (<em>float</em>) – Probability of observing a standard deviation greater than the original in the null model.</p></li>
+<li><p><strong>P_T</strong> (<em>float</em>) – Probability of observing a range greater than the original in the null model.</p></li>
+<li><p><strong>P_Tn</strong> (<em>float</em>) – Probability of observing a maximum difference greater than the original in the null model.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Compute the Gaussian null model for the mutual conditional information.</dt><dd><ul>
+<li><p>Z-Y-X-Z: 0</p></li>
+<li><p>Z Y-X-Z: 1</p></li>
+<li><p>Z-Y X-Z: 2</p></li>
+<li><p>Z-Y-X Z: 3</p></li>
+<li><p>Z Y X-Z: 4</p></li>
+<li><p>Z-Y X Z: 5</p></li>
+<li><p>Z Y-X Z: 6</p></li>
+<li><p>Z Y X Z: 7</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infocore.sigma">
+<span class="sig-prename descclassname"><span class="pre">infocore.</span></span><span class="sig-name descname"><span class="pre">sigma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeseries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">null</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nrunmax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/infocore.html#sigma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infocore.sigma" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the standard deviation of mutual information values between continuous variables in a time series.
+Define as the Sigma measure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeseries</strong> (<em>numpy.ndarray</em>) – 2D array representing the time series data.</p></li>
+<li><p><strong>I</strong> (<em>list</em>) – List of indices specifying rows of interest in the time series.</p></li>
+<li><p><strong>num</strong> (<em>int</em>) – Number of intervals for analysis.</p></li>
+<li><p><strong>tlen</strong> (<em>int</em>) – Length of the time window considered for analysis.</p></li>
+<li><p><strong>null</strong> (<em>bool</em><em> or </em><em>int</em>) – If False, only computes the standard deviation. If an integer, simulates a null model
+with the specified number of runs. Defaults to False.</p></li>
+<li><p><strong>nrunmax</strong> (<em>int</em>) – Maximum number of runs for null model simulation. Default is 5000.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>Sigma</strong> (<em>float</em>) – Standard deviation of conditional mutual information</p></li>
+<li><p><em>Sigma_null</em> – Standard deviation of conditional mutual information of null model</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infocore.t">
+<span class="sig-prename descclassname"><span class="pre">infocore.</span></span><span class="sig-name descname"><span class="pre">t</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeseries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">null</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nrunmax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/infocore.html#t"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infocore.t" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the range of mutual information values between continuous variables in a time series.
+Define as the T measure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeseries</strong> (<em>numpy.ndarray</em>) – 2D array representing the time series data.</p></li>
+<li><p><strong>I</strong> (<em>list</em>) – List of indices specifying rows of interest in the time series.</p></li>
+<li><p><strong>num</strong> (<em>int</em>) – Number of intervals for analysis.</p></li>
+<li><p><strong>tlen</strong> (<em>int</em>) – Length of the time window considered for analysis.</p></li>
+<li><p><strong>null</strong> (<em>bool</em><em> or </em><em>int</em>) – If False, only computes the standard deviation. If an integer, simulates a null model
+with the specified number of runs. Defaults to False.</p></li>
+<li><p><strong>nrunmax</strong> (<em>int</em>) – Maximum number of runs for null model simulation. Default is 5000.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>T</strong> (<em>float</em>) – Absolute difference between min and max values of conditional mutual information</p></li>
+<li><p><em>T_null</em> – Absolute difference between min and max values of conditional mutual information of null model</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infocore.timeseries_quantile">
+<span class="sig-prename descclassname"><span class="pre">infocore.</span></span><span class="sig-name descname"><span class="pre">timeseries_quantile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeseries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/infocore.html#timeseries_quantile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infocore.timeseries_quantile" title="Permalink to this definition"></a></dt>
+<dd><p>Computes quantiles of time series data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeseries</strong> (<em>numpy.ndarray</em>) – 2D array representing the time series data.</p></li>
+<li><p><strong>I</strong> (<em>list</em>) – List of indices specifying rows of interest in the time series.</p></li>
+<li><p><strong>num</strong> (<em>int</em>) – Number of quantiles to compute.</p></li>
+<li><p><strong>tlen</strong> (<em>int</em>) – Length of the time window considered for quantile computation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>X_sort</strong> (<em>numpy.ndarray</em>) – Sorted values of the first row of interest.</p></li>
+<li><p><strong>Y_sort</strong> (<em>numpy.ndarray</em>) – Sorted values of the second row of interest.</p></li>
+<li><p><strong>sp</strong> (<em>numpy.ndarray</em>) – Quantile labels corresponding to the third row of interest.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infocore.timeseries_quantile_val">
+<span class="sig-prename descclassname"><span class="pre">infocore.</span></span><span class="sig-name descname"><span class="pre">timeseries_quantile_val</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeseries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/infocore.html#timeseries_quantile_val"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infocore.timeseries_quantile_val" title="Permalink to this definition"></a></dt>
+<dd><p>Computes quantiles of time series data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeseries</strong> (<em>numpy.ndarray</em>) – 2D array representing the time series data.</p></li>
+<li><p><strong>I</strong> (<em>list</em>) – List of indices specifying rows of interest in the time series.</p></li>
+<li><p><strong>num</strong> (<em>int</em>) – Number of quantiles to compute.</p></li>
+<li><p><strong>tlen</strong> (<em>int</em>) – Length of the time window considered for quantile computation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>X_sort</strong> (<em>numpy.ndarray</em>) – Sorted values of the first row of interest.</p></li>
+<li><p><strong>Y_sort</strong> (<em>numpy.ndarray</em>) – Sorted values of the second row of interest.</p></li>
+<li><p><strong>sp</strong> (<em>numpy.ndarray</em>) – Quantile labels corresponding to the third row of interest.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="infocore.tn">
+<span class="sig-prename descclassname"><span class="pre">infocore.</span></span><span class="sig-name descname"><span class="pre">tn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeseries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tlen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">null</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nrunmax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/infocore.html#tn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#infocore.tn" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the maximum difference between consecutive mutual information values in a time series.
+Define as the Tn measure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeseries</strong> (<em>numpy.ndarray</em>) – 2D array representing the time series data.</p></li>
+<li><p><strong>I</strong> (<em>list</em>) – List of indices specifying rows of interest in the time series.</p></li>
+<li><p><strong>num</strong> (<em>int</em>) – Number of intervals for analysis.</p></li>
+<li><p><strong>tlen</strong> (<em>int</em>) – Length of the time window considered for analysis.</p></li>
+<li><p><strong>null</strong> (<em>bool</em><em> or </em><em>int</em>) – If False, only computes the standard deviation. If an integer, simulates a null model
+with the specified number of runs. Defaults to False.</p></li>
+<li><p><strong>nrunmax</strong> (<em>int</em>) – Maximum number of runs for null model simulation. Default is 5000.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>Tn</strong> (<em>float</em>) – Absolute difference between two consecutive conditional mutual information value</p></li>
+<li><p><em>Tn_null</em> – Absolute difference between two consecutive conditional mutual information value of null model</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright (c) 2023: Anthony Baptista.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

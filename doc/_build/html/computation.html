@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>computation module &mdash; triaction 0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/my_theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="content/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/cite.html">Citation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/changelog.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/contributing.html">Contributor Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">triaction</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">computation module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/computation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-computation">
+<span id="computation-module"></span><h1>computation module<a class="headerlink" href="#module-computation" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="computation.conditional_correlation">
+<span class="sig-prename descclassname"><span class="pre">computation.</span></span><span class="sig-name descname"><span class="pre">conditional_correlation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'fd'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/computation.html#conditional_correlation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#computation.conditional_correlation" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the conditional variance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_observations</em><em>,</em><em>) or </em><em>(</em><em>1</em><em>, </em><em>n_observations</em><em>)</em>) – The time series data.</p></li>
+<li><p><strong>Y</strong> (<em>numpy.ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_observations</em><em>,</em><em>) or </em><em>(</em><em>1</em><em>, </em><em>n_observations</em><em>)</em>) – The time series data.</p></li>
+<li><p><strong>Z</strong> (<em>numpy.ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_observations</em><em>,</em><em>) or </em><em>(</em><em>1</em><em>, </em><em>n_observations</em><em>)</em>) – The time series data. (condition)</p></li>
+<li><p><strong>bins</strong> (<em>int</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – (default = ‘fd’)
+The number of bins or the method to compute the number of bins.
+- ‘fd’ : Freedman-Diaconis rule
+- n (int) : The number of bins for the variable.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>corr_cond</strong> (<em>numpy.ndarray of shape (n_bins,)</em>) – The conditional correlation.</p></li>
+<li><p><strong>z</strong> (<em>numpy.ndarray of shape (n_bins,)</em>) – The bin values of the conditional variable.</p></li>
+<li><p><strong>corr_cond_err</strong> (<em>numpy.ndarray of shape (n_bins,)</em>) – The standard error of the conditional correlation.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="computation.conditional_mutual_information">
+<span class="sig-prename descclassname"><span class="pre">computation.</span></span><span class="sig-name descname"><span class="pre">conditional_mutual_information</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'fd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pmf_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'kde'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'kl-div'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/computation.html#conditional_mutual_information"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#computation.conditional_mutual_information" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the conditional mutual information between X and Y given Z.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_observations</em><em>, </em><em>) or </em><em>(</em><em>1</em><em>, </em><em>n_observations</em><em>)</em>) – The data.</p></li>
+<li><p><strong>Y</strong> (<em>numpy.ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_observations</em><em>, </em><em>) or </em><em>(</em><em>1</em><em>, </em><em>n_observations</em><em>)</em>) – The data.</p></li>
+<li><p><strong>Z</strong> (<em>numpy.ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_observations</em><em>, </em><em>) or </em><em>(</em><em>1</em><em>, </em><em>n_observations</em><em>)</em>) – The data to be conditioned.</p></li>
+<li><p><strong>bins</strong> (<em>str</em><em> or </em><em>a sequence</em><em> of </em><em>int</em><em> or </em><em>int</em><em>, </em><em>optional</em>) – (default = None)
+The number of bins or the method to compute the number of bins.
+- ‘fd’ : The number of bins is computed using the Freedman-Diaconis rule.
+- n_1, n_2, …, n_n : The number of bins for each variable.
+- n : The number of bins for all variables.</p></li>
+<li><p><strong>pmf_method</strong> (<em>str</em><em>, </em><em>optional</em>) – (default = ‘kde’)
+The method to estimate the probability mass function.
+- ‘hist’ : The probability density function is estimated by the histogram method.
+- ‘kde’ : The probability density function is estimated by the kernel density estimation.</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – (default = ‘kl-div’)
+The method to estimate the mutual information.
+- ‘kl-div’ : The mutual information is calculated by the Kullback-Leibler divergence.
+- ‘entropy’ : The mutual information is calculated from entropies.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>cmi</strong> (<em>numpy.ndarray of shape (n_bins,)</em>) – The conditional mutual information between X and Y given Z=z for each z in Z.</p></li>
+<li><p><strong>pmf_Z</strong> (<em>numpy.ndarray of shape (n_bins,)</em>) – The probability mass function of Z.</p></li>
+<li><p><strong>z</strong> (<em>numpy.ndarray of shape (n_bins,)</em>) – The z values of the corresponding bins.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="computation.covariance">
+<span class="sig-prename descclassname"><span class="pre">computation.</span></span><span class="sig-name descname"><span class="pre">covariance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/computation.html#covariance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#computation.covariance" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the covariance matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>numpy.ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_nodes</em><em>, </em><em>n_timesteps</em><em>, </em><em>n_samples</em><em>)</em>) – The time series data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>cov_np</strong> – The covariance matrix.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray of shape (n_samples, n_nodes * n_nodes)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="computation.create_node_edge_incidence_matrix">
+<span class="sig-prename descclassname"><span class="pre">computation.</span></span><span class="sig-name descname"><span class="pre">create_node_edge_incidence_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/computation.html#create_node_edge_incidence_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#computation.create_node_edge_incidence_matrix" title="Permalink to this definition"></a></dt>
+<dd><p>Create a node-edge incidence matrix B from a given edge list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>edge_list</strong> (<em>list</em><em> of </em><em>tuples</em><em> (</em><em>i</em><em>, </em><em>j</em><em>) </em><em>where i &lt; j</em>) – The list of edges (i, j).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>B</strong> (<em>numpy.ndarray of shape (n_nodes, n_edges)</em>)</p></li>
+<li><p><em>The node-edge incidence matrix.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="computation.estimate_mutual_information">
+<span class="sig-prename descclassname"><span class="pre">computation.</span></span><span class="sig-name descname"><span class="pre">estimate_mutual_information</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'fd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pmf_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'kde'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'kl-div'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/computation.html#estimate_mutual_information"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#computation.estimate_mutual_information" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the mutual information between X and Y.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>numpy.ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_observations</em><em>,</em><em>) or </em><em>(</em><em>1</em><em>, </em><em>n_observations</em><em>)</em>) – The data.</p></li>
+<li><p><strong>Y</strong> (<em>numpy.ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_observations</em><em>,</em><em>) or </em><em>(</em><em>1</em><em>, </em><em>n_observations</em><em>)</em>) – The data.</p></li>
+<li><p><strong>bins</strong> (<em>str</em><em> or </em><em>a sequence</em><em> of </em><em>int</em><em> or </em><em>int</em><em>, </em><em>optional</em>) – (default = None)
+The number of bins or the method to compute the number of bins.
+- ‘fd’ : The number of bins is computed using the Freedman-Diaconis rule.
+- n : The number of bins for the variable.</p></li>
+<li><p><strong>pmf_method</strong> (<em>str</em><em>, </em><em>optional</em>) – (default = ‘kde’)
+The method to estimate the probability mass function.
+- ‘hist’ : The probability density function is estimated by the histogram method.
+- ‘kde’ : The probability density function is estimated by the kernel density estimation.</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – (default = ‘kl-div’)
+The method to estimate the mutual information.
+- ‘kl-div’ : The mutual information is calculated by the Kullback-Leibler divergence.
+- ‘entropy’ : The mutual information is calculated from entropies.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>mi</strong> – The mutual information between X and Y.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="computation.estimate_pdf">
+<span class="sig-prename descclassname"><span class="pre">computation.</span></span><span class="sig-name descname"><span class="pre">estimate_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'fd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'kde'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/computation.html#estimate_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#computation.estimate_pdf" title="Permalink to this definition"></a></dt>
+<dd><p>Estimate the probability density function of the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>numpy.ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_observations</em><em>,</em><em>) or </em><em>(</em><em>1</em><em>, </em><em>n_observations</em><em>)</em>) – The data.</p></li>
+<li><p><strong>bins</strong> (<em>str</em><em> or </em><em>a sequence</em><em> of </em><em>int</em><em> or </em><em>int</em><em>, </em><em>optional</em>) – (default = None)
+The number of bins or the method to compute the number of bins.
+- ‘fd’ (str) : The number of bins is computed using the Freedman-Diaconis rule.
+- n (int) : The number of bins for the variable.
+- numpy.ndarray : The bin edges for the variable.</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – (default = ‘kde’)
+The method to estimate the probability density function.
+- ‘hist’ : The probability density function is estimated by the histogram method.
+- ‘kde’ : The probability density function is estimated by the kernel density estimation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>pdf</strong> (<em>numpy.ndarray of shape (n_bins, )</em>) – The estimated probability density function.</p></li>
+<li><p><strong>x</strong> (<em>numpy.ndarray of shape (n_bins, )</em>) – The x values.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="computation.estimate_pdf_joint">
+<span class="sig-prename descclassname"><span class="pre">computation.</span></span><span class="sig-name descname"><span class="pre">estimate_pdf_joint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'fd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'kde'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/computation.html#estimate_pdf_joint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#computation.estimate_pdf_joint" title="Permalink to this definition"></a></dt>
+<dd><p>Estimate the joint probability density function of the data by the histogram method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>numpy.ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_variables</em><em>, </em><em>n_observations</em><em>)</em>) – The data.</p></li>
+<li><p><strong>bins</strong> (<em>str</em><em> or </em><em>a sequence</em><em> of </em><em>int</em><em> or </em><em>int</em><em> or </em><em>list</em><em>, </em><em>optional</em>) – (default = None)
+The number of bins or the method to compute the number of bins.
+- ‘fd’ (str) : The number of bins is computed using the Freedman-Diaconis rule.
+- n_{1}, n_{2}, …, n_{n_variables} (sequence of int) : The number of bins for each variable.
+- n (int): The number of bins for all variables.
+- list (list of numpy.ndarray) : The bin edges for each variable.</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – (default = ‘kde’)
+The method to estimate the probability density function.
+- ‘hist’ : The probability density function is estimated by the histogram method.
+- ‘kde’ : The probability density function is estimated by the kernel density estimation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>pdf_joint</strong> (<em>numpy.ndarray of shape (n_bins_{1}, …, n_bins_{n_variables})</em>) – The estimated probability density function.</p></li>
+<li><p><strong>x</strong> (<em>list of numpy.ndarray of shape (n_bins_{i},) [i = 1, …, n_variables]</em>) – The x values of the corresponding bins.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="computation.estimate_pmf">
+<span class="sig-prename descclassname"><span class="pre">computation.</span></span><span class="sig-name descname"><span class="pre">estimate_pmf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'fd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'kde'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/computation.html#estimate_pmf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#computation.estimate_pmf" title="Permalink to this definition"></a></dt>
+<dd><p>Estimate the probability mass function of the data by the histogram method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>numpy.ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_observations</em><em>,</em><em>) or </em><em>(</em><em>1</em><em>, </em><em>n_observations</em><em>)</em>) – The data.</p></li>
+<li><p><strong>bins</strong> (<em>str</em><em> or </em><em>a sequence</em><em> of </em><em>int</em><em> or </em><em>int</em><em>, </em><em>optional</em>) – (default = None)
+The number of bins or the method to compute the number of bins.
+- ‘fd’ : The number of bins is computed using the Freedman-Diaconis rule.
+- n : The number of bins for the variable.
+- np.ndarray : The bin edges for the variable.</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – (default = ‘kde’)
+The method to estimate the probability density function.
+- ‘hist’ : The probability density function is estimated by the histogram method.
+- ‘kde’ : The probability density function is estimated by the kernel density estimation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>pmf</strong> (<em>numpy.ndarray of shape (n_bins, )</em>) – The estimated probability mass function of the data.</p></li>
+<li><p><strong>X</strong> (<em>numpy.ndarray of shape (n_bins, )</em>) – The bin centers for variables.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="computation.estimate_pmf_joint">
+<span class="sig-prename descclassname"><span class="pre">computation.</span></span><span class="sig-name descname"><span class="pre">estimate_pmf_joint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'fd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'kde'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/computation.html#estimate_pmf_joint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#computation.estimate_pmf_joint" title="Permalink to this definition"></a></dt>
+<dd><p>Estimate the joint probability mass function of the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>numpy.ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_variables</em><em>, </em><em>n_observations</em><em>)</em>) – The data.</p></li>
+<li><p><strong>bins</strong> (<em>str</em><em> or </em><em>a sequence</em><em> of </em><em>int</em><em> or </em><em>int</em><em> or </em><em>list</em><em>, </em><em>optional</em>) – (default = None)
+The number of bins or the method to compute the number of bins.
+- ‘fd’ : The number of bins is computed using the Freedman-Diaconis rule.
+- n_{1}, n_{2}, …, n_{n_variable} : The number of bins for each variable.
+- n : The number of bins for all variables.
+- list : The bin edges for each variable.</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – (default = ‘kde’)
+The method to estimate the probability density function.
+- ‘hist’ : The probability density function is estimated by the histogram method.
+- ‘kde’ : The probability density function is estimated by the kernel density estimation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>pmf_joint</strong> (<em>numpy.ndarray of shape (n_bins^{1}, n_bins^{2}, …, n_bins^{n_variables})</em>) – The estimated probability mass function of the data.</p></li>
+<li><p><strong>x</strong> (<em>list of numpy.ndarray of shape (n_bins^{i},}) [i = 1, …, n_variables]</em>) – The x values of the corresponding bins.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="computation.extract_by_std">
+<span class="sig-prename descclassname"><span class="pre">computation.</span></span><span class="sig-name descname"><span class="pre">extract_by_std</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_std</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/computation.html#extract_by_std"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#computation.extract_by_std" title="Permalink to this definition"></a></dt>
+<dd><p>Extract the data within a given number of standard deviations from its mean.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>numpy.ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_observations</em><em>, </em><em>)</em>) – The data.</p></li>
+<li><p><strong>n_std</strong> (<em>float</em><em>, </em><em>optional</em>) – (default = 3.0)
+The number of standard deviations to extract.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>data_min</strong> (<em>float</em>) – The minimum value in the extracted range of data .</p></li>
+<li><p><strong>data_max</strong> (<em>float</em>) – The maximum value in the extracted range of data.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the data is not of shape (n_observations, ).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="computation.freedman_diaconis_rule">
+<span class="sig-prename descclassname"><span class="pre">computation.</span></span><span class="sig-name descname"><span class="pre">freedman_diaconis_rule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.3333333333333333</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/computation.html#freedman_diaconis_rule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#computation.freedman_diaconis_rule" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the number of bins using the Freedman-Diaconis rule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>numpy.ndarray</em><em> of </em><em>shape</em><em> (</em><em>n_variables</em><em>, </em><em>n_observations</em><em>)</em>) – The data matrix.</p></li>
+<li><p><strong>power</strong> (<em>float</em><em>, </em><em>optional</em>) – (default = 1./3.)
+The power of the number of observations in the denominator.</p></li>
+<li><p><strong>factor</strong> (<em>float</em><em>, </em><em>optional</em>) – (default = 2.)
+The factor to multiply the width of bins.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>bins_edges</strong> – The bins edges.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray of shape (n_bins,) or list of numpy.ndarray of shape (n_bins_{i},) [i = 1, …, n_variables]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the data is not a one-dimensional or two-dimensional array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright (c) 2023: Anthony Baptista.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
