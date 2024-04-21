@@ -8,10 +8,10 @@ Triaction : Python code for triadic interactions
 This repository contains the Python package called triaction, which enables the detection of triadic interactions. It also provides visualization capabilities to visualise triadic interaction network.
 
 # Add link to arXiv link
+
 -----------------
  Installation
 -----------------
-
 
 .. code-block:: bash    
 
@@ -20,7 +20,6 @@ This repository contains the Python package called triaction, which enables the 
 -----------------
 Data
 -----------------
-
 
 ``Continuous data``:
  * Gene expression
