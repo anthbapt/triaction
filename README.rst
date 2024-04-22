@@ -38,6 +38,8 @@ Scatter plot of the results of the Triaction algorithm on AML gene expression da
 
 .. code-block:: Python  
 
+   from triaction.analysis import decision_tree_val, visualisation_conditioned_val
+
    name_X = 'GATA1'
    name_Y = 'TAL1'
    name_Z = 'KLF5'
@@ -49,15 +51,8 @@ Scatter plot of the results of the Triaction algorithm on AML gene expression da
    timeseries[0,:] = X
    timeseries[1,:] = Y
    timeseries[2,:] = Z
-   I = [1,2,3]
    num = 5
    tlen = len(X)
-   nrunmax = 1000
-   MI, MIz, MIz_null, MIC, Theta_S, Theta2_T, Theta2_Tn, Sigma, Sigma_null_list, P, P_T, P_Tn = ifc.Theta_score_null_model(timeseries, I, num, tlen, nrunmax, True, True)
-   MI, MIz, MIC, Corr_Sigma, Sigma, T, Tn, MINDY, MI1, MI2 = ifc.mutual_information_analysis_continuous_extended(timeseries, [0,1,2], num, tlen)
-   x = range(1, num+1)
-   th1,th2,c = decision_tree(x, MIz, disp_fig=True, disp_txt_rep=True,
-                 disp_tree=True, name=save_folder + '/' + 'good_decision_tree')
    I = [0,1,2]
    visualisation_conditioned_val(timeseries, I, num, tlen, name = save_folder + '/' + 'good', cond = [th1,th2])
 
