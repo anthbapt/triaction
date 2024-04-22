@@ -27,7 +27,7 @@ Data
  * Gene expression
 
 -----------------
-Usage
+Gene expression of Acute Myeloid Leukemia (AML)
 -----------------
 
 Scatter plot of the results of the Triaction algorithm on AML gene expression data. Each data point shows the information-theoretic measures for a triple of nodes $X$, $Y$ and $Z$, namely MI and CMI, the mutual information and conditional mutual information between $X$ and $Y$, respectively. The colour of each point corresponds to the value of $\Sigma$, which characterises the strength of the triadic interaction between gene $Z$ and the edge between $X$ and $Y$.
@@ -61,7 +61,7 @@ Scatter plot of the results of the Triaction algorithm on AML gene expression da
    visualisation_conditioned_val(timeseries, I, num, tlen, name = save_folder + '/' + 'good', cond = [th1,th2])
 
 .. image:: output/good.png
-   :width: 600
+   :width: 800
 
 .. code-block:: Python  
 
@@ -83,4 +83,4 @@ Scatter plot of the results of the Triaction algorithm on AML gene expression da
    triadic_network_vis_from_data_and_graph(sub_graph, sub_final, top)
 
 .. image:: output/triadic_vis_from_data.png
-   :width: 600
+   :width: 800
