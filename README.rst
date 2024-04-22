@@ -31,9 +31,10 @@ Usage
 -----------------
 
 .. image:: output/MI_merge.png
-   :width: 200
+   :width: 400
 
-.. code-block:: Python    
+.. code-block:: Python  
+
    name_X = 'GATA1'
    name_Y = 'TAL1'
    name_Z = 'KLF5'
@@ -57,8 +58,25 @@ Usage
    visualisation_conditioned_val(timeseries, I, num, tlen, name = save_folder + '/' + 'good', cond = [th1,th2])
 
 .. image:: output/good.png
-   :width: 200
+   :width: 400
 
+.. code-block:: Python  
+
+   from triaction.triadic_vis import triadic_network_vis_from_data_and_graph
+   sub_triadic = pd.concat([short_range[short_range['P']<0.001], long_range[long_range['P']<0.001]]).reset_index()
+   sub_sub_triadic = sub_triadic.sort_values(by='Theta', ascending=False).reset_index()
+   sub_sub_triadic = sub_sub_triadic[0:10]
+   
+   set_nodes = set(sub_sub_triadic['reg']).union(set(sub_sub_triadic['node1'])).union(set(sub_sub_triadic['node2']))
+   graph_ppi.remove_edges_from(list(nx.selfloop_edges(graph_ppi)))
+   sub_graph = nx.Graph(graph_ppi.subgraph(list(set_nodes)))
+   
+   sub_final = sub_triadic[sub_triadic['node1'].isin(set_nodes)]
+   sub_final = sub_final[sub_final['node2'].isin(set_nodes)]
+   sub_final = sub_final[sub_final['reg'].isin(set_nodes)]
+   sub_final = sub_final.reset_index(drop=True)
+   top = len(sub_final)
+   triadic_network_vis_from_data_and_graph(sub_graph, sub_final, top)
 
 .. image:: output/triadic_vis_from_data.png
-   :width: 200
+   :width: 400
