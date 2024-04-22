@@ -30,8 +30,10 @@ Data
 Usage
 -----------------
 
+Scatter plot of the results of the Triaction algorithm on AML gene expression data. Each data point shows the information-theoretic measures for a triple of nodes $X$, $Y$ and $Z$, namely MI and CMI, the mutual information and conditional mutual information between $X$ and $Y$, respectively. The colour of each point corresponds to the value of $\Sigma$, which characterises the strength of the triadic interaction between gene $Z$ and the edge between $X$ and $Y$.
+
 .. image:: output/MI_merge.png
-   :width: 400
+   :width: 600
 
 .. code-block:: Python  
 
@@ -41,6 +43,7 @@ Usage
    X = np.array(gene_expression.T[name_X])
    Y = np.array(gene_expression.T[name_Y])
    Z = np.array(gene_expression.T[name_Z])
+
    timeseries = np.zeros((3,len(X)))
    timeseries[0,:] = X
    timeseries[1,:] = Y
@@ -58,11 +61,12 @@ Usage
    visualisation_conditioned_val(timeseries, I, num, tlen, name = save_folder + '/' + 'good', cond = [th1,th2])
 
 .. image:: output/good.png
-   :width: 400
+   :width: 600
 
 .. code-block:: Python  
 
    from triaction.triadic_vis import triadic_network_vis_from_data_and_graph
+
    sub_triadic = pd.concat([short_range[short_range['P']<0.001], long_range[long_range['P']<0.001]]).reset_index()
    sub_sub_triadic = sub_triadic.sort_values(by='Theta', ascending=False).reset_index()
    sub_sub_triadic = sub_sub_triadic[0:10]
@@ -79,4 +83,4 @@ Usage
    triadic_network_vis_from_data_and_graph(sub_graph, sub_final, top)
 
 .. image:: output/triadic_vis_from_data.png
-   :width: 400
+   :width: 600
