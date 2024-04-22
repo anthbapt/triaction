@@ -26,9 +26,10 @@ Data
 ``Continuous data``:
  * Gene expression
 
------------------
+
+---------------------------------------------------
 Gene expression of Acute Myeloid Leukemia (AML)
------------------
+---------------------------------------------------
 
 Scatter plot of the results of the Triaction algorithm on AML gene expression data. Each data point shows the information-theoretic measures for a triple of nodes $X$, $Y$ and $Z$, namely MI and CMI, the mutual information and conditional mutual information between $X$ and $Y$, respectively. The colour of each point corresponds to the value of $\Sigma$, which characterises the strength of the triadic interaction between gene $Z$ and the edge between $X$ and $Y$.
 
