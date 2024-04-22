@@ -40,6 +40,7 @@ Scatter plot of the results of the Triaction algorithm on AML gene expression da
 
    from triaction.analysis import decision_tree_val, visualisation_conditioned_val
 
+   gene_expression = pd.read_csv('data/reduce_gene_expression.tsv', sep = '\t', index_col=0)
    name_X = 'GATA1'
    name_Y = 'TAL1'
    name_Z = 'KLF5'
@@ -62,6 +63,10 @@ Scatter plot of the results of the Triaction algorithm on AML gene expression da
 .. code-block:: Python  
 
    from triaction.triadic_vis import triadic_network_vis_from_data_and_graph
+
+   ppi = pd.read_csv('data/reduce_ppi.tsv', sep = '\t')
+   graph_ppi = nx.from_pandas_edgelist(ppi, source = '0', target = '1')
+   short_range = pd.read_csv('data/short_range.txt', sep = '\t')
 
    sub_triadic = pd.concat([short_range[short_range['P']<0.001], long_range[long_range['P']<0.001]]).reset_index()
    sub_sub_triadic = sub_triadic.sort_values(by='Theta', ascending=False).reset_index()
