@@ -9,7 +9,7 @@ This repository contains the Python package called triaction, which enables the 
 
 The package has been created by Anthony Baptista and Ginestra Bianconi.
 
-# Add link to arXiv link
+arXiv link to the preprint: https://arxiv.org/abs/2404.14997
 
 -----------------
  Installation
