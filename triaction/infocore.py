@@ -1,8 +1,8 @@
 from sklearn.feature_selection import mutual_info_regression
-from coniii.ising_eqn import ising_eqn_3_sym
-from coniii.ising_eqn import ising_eqn_2_sym
+#from coniii.ising_eqn import ising_eqn_3_sym
+#from coniii.ising_eqn import ising_eqn_2_sym
 import sklearn.preprocessing
-import coniii as coni
+#import coniii as coni
 import scipy as sp
 import numpy as np
 import math
@@ -342,7 +342,7 @@ def mindy(timeseries:np.ndarray, I:list, tlen:int):
     MINDY = np.abs(MI1 - MI2)
         
     return MINDY, MI1, MI2
-
+    
 
 def mutual_information(timeseries:np.ndarray, I:list, num:int, tlen:int):
     """
@@ -1074,7 +1074,7 @@ def learn_settings(i:int):
 
     return out
         
-
+'''
 def inverse_ising_null_model(X:np.ndarray, Y:np.ndarray, Z:np.ndarray, normalised:bool = False, model:str = 'pseudo', hypothesis:int = None):
     """
     Compute the inverse Ising null model for given Ising model parameters.
@@ -1283,3 +1283,4 @@ def inverse_ising2(X:np.ndarray, Y:np.ndarray, model:str = 'pseudo'):
     Jxy = params[2]
     
     return hx, hy, Jxy
+'''
