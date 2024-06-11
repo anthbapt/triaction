@@ -6,7 +6,6 @@ import coniii as coni
 import scipy as sp
 import numpy as np
 import math
-from pyitlib import discrete_random_variable as drv
 
 ### Change the convention for I, then it starts at 1 and we move I-1 in null model and several other functions
 ### now it should be better to start from 0 and remove the I-1 everywhere.
@@ -338,15 +337,11 @@ def mindy(timeseries:np.ndarray, I:list, tlen:int):
         y = Y_sort[i*dtlen:(i+1)*dtlen]
         mi = mutual_info_regression(Xn, y, discrete_features = False)
         MINDYz[i] = mi[0]
-        oldMINDYz[i] = drv.information_mutual(np.round(Xn[:,0]), np.round(y))
     MI1 = MINDYz[0]
     MI2 = MINDYz[2]
     MINDY = np.abs(MI1 - MI2)
-    oldMI1 = oldMINDYz[0]
-    oldMI2 = oldMINDYz[2]
-    oldMINDY = np.abs(oldMI1 - oldMI2)
         
-    return MINDY, MI1, MI2, oldMINDY, oldMI1, oldMI2
+    return MINDY, MI1, MI2
 
 
 def mutual_information(timeseries:np.ndarray, I:list, num:int, tlen:int):
