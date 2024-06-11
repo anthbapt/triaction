@@ -88,6 +88,6 @@ setup(
     packages=find_packages(),
     package_dir={'triaction': 'triaction'},
     package_data={'triaction': data_example_file_list},
-    install_requires=['networkx', 'numpy', 'pandas', 'matplotlib', 'seaborn', 'scipy', 'scikit-learn', 'pyitlib'],
+    install_requires=['networkx', 'numpy', 'pandas', 'matplotlib', 'seaborn', 'scipy', 'scikit-learn'],
     entry_points={},
 )
