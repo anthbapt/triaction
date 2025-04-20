@@ -7,7 +7,7 @@ Triaction : Python code for triadic interactions
 
 This repository contains the Python package called triaction, which enables the detection of triadic interactions. It also provides visualization capabilities to visualise triadic interaction network.
 
-The package has been created by Anthony Baptista and Ginestra Bianconi.
+The package has been created by Anthony Baptista and Ginestra Bianconi, with the help of Jun Yamamoto and Marta Niedostatek.
 
 arXiv link to the preprint: https://arxiv.org/abs/2404.14997
 
