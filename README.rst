@@ -11,6 +11,8 @@ The package has been created by Anthony Baptista and Ginestra Bianconi, with the
 
 arXiv link to the preprint: https://arxiv.org/abs/2404.14997
 
+The latest version of triaction has been moved to Trim: https://github.com/anthbapt/trim
+
 -----------------
  Installation
 -----------------
